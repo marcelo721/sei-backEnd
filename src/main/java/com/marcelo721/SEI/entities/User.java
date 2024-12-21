@@ -2,7 +2,6 @@ package com.marcelo721.SEI.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 @Entity
 @Getter
