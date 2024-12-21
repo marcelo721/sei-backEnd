@@ -1,5 +1,6 @@
 package com.marcelo721.SEI.entities;
 
+import com.marcelo721.SEI.entities.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +29,11 @@ public class User {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Builder.Default
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.STUDENT;
 
     @ManyToMany
     @JoinTable(name = "user_subjects",
