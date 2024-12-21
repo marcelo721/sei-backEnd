@@ -1,8 +1,12 @@
 package com.marcelo721.SEI.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -20,5 +24,9 @@ public class Subject {
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "subjects")
+    private Set<User> users = new HashSet<>();
 
 }
