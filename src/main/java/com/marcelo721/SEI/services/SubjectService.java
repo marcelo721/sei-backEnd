@@ -3,17 +3,19 @@ package com.marcelo721.SEI.services;
 
 import com.marcelo721.SEI.entities.Subject;
 import com.marcelo721.SEI.repositories.SubjectRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class SubjectService {
 
-    private SubjectRepository subjectRepository;
+    private final SubjectRepository subjectRepository;
+
+    public SubjectService(SubjectRepository subjectRepository) {
+        this.subjectRepository = subjectRepository;
+    }
 
     @Transactional()
     public Subject save(Subject subject) {
