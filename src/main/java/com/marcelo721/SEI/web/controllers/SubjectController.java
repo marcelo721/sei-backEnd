@@ -2,6 +2,7 @@ package com.marcelo721.SEI.web.controllers;
 
 import com.marcelo721.SEI.entities.Subject;
 import com.marcelo721.SEI.services.SubjectService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,13 +11,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/subjects")
+@RequiredArgsConstructor
 public class SubjectController {
 
     private final SubjectService subjectService;
-
-    public SubjectController(SubjectService subjectService) {
-        this.subjectService = subjectService;
-    }
 
     @PostMapping
     public ResponseEntity<Subject> addSubject(@RequestBody Subject subject) {
