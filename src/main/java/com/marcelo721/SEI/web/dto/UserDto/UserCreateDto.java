@@ -1,4 +1,4 @@
-package com.marcelo721.SEI.web.dto;
+package com.marcelo721.SEI.web.dto.UserDto;
 
 import com.marcelo721.SEI.entities.User;
 

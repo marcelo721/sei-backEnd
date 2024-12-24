@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,6 +32,6 @@ public class Subject {
     @ManyToMany(mappedBy = "subjects")
     private Set<User> users = new HashSet<>();
 
-    @OneToMany(mappedBy = "subjects")
-    private List<Topic> topics;
+    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER)
+    private List<Topic> topics = new ArrayList<>();
 }

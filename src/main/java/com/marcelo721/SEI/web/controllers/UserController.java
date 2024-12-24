@@ -3,6 +3,8 @@ package com.marcelo721.SEI.web.controllers;
 import com.marcelo721.SEI.entities.Subject;
 import com.marcelo721.SEI.entities.User;
 import com.marcelo721.SEI.services.UserService;
+import com.marcelo721.SEI.web.dto.UserDto.UserCreateDto;
+import com.marcelo721.SEI.web.dto.UserDto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,21 +20,24 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User obj = userService.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(obj);
+    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserCreateDto user) {
+        User obj = user.toUser();
+        userService.save(obj);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(UserResponseDto.toDto(obj));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
+    public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
         User obj = userService.findById(id);
-        return ResponseEntity.ok(obj);
+
+        return ResponseEntity.ok(UserResponseDto.toDto(obj));
     }
 
     @GetMapping()
-    public ResponseEntity<List<User>> getAll() {
+    public ResponseEntity<List<UserResponseDto>> getAll() {
         List<User> users = userService.findAll();
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(UserResponseDto.toListDto(users));
     }
 
     @PostMapping("/{userId}/subjects/{subjectId}")

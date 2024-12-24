@@ -4,6 +4,8 @@ import com.marcelo721.SEI.entities.Subject;
 import com.marcelo721.SEI.entities.User;
 import com.marcelo721.SEI.services.SubjectService;
 import com.marcelo721.SEI.services.UserService;
+import com.marcelo721.SEI.web.dto.SubjectDto.SubjectCreateDto;
+import com.marcelo721.SEI.web.dto.SubjectDto.SubjectResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,20 +22,20 @@ public class SubjectController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<Subject> addSubject(@RequestBody Subject subject) {
-        Subject obj = subjectService.save(subject);
-        return ResponseEntity.status(HttpStatus.CREATED).body(obj);
+    public ResponseEntity<SubjectResponseDto> save(@RequestBody SubjectCreateDto subject) {
+        Subject obj = subjectService.save(subject.toSubject());
+        return ResponseEntity.status(HttpStatus.CREATED).body(SubjectResponseDto.toDto(obj));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Subject> getSubject(@PathVariable Long id) {
+    public ResponseEntity<SubjectResponseDto> getSubject(@PathVariable Long id) {
         Subject obj = subjectService.findById(id);
-        return ResponseEntity.ok(obj);
+        return ResponseEntity.ok(SubjectResponseDto.toDto(obj));
     }
 
     @GetMapping()
-    public ResponseEntity<List<Subject>> getAll() {
+    public ResponseEntity<List<SubjectResponseDto>> getAll() {
         List<Subject> subjects = subjectService.findAll();
-        return ResponseEntity.ok(subjects);
+        return ResponseEntity.ok(SubjectResponseDto.toListDto(subjects));
     }
 }
