@@ -1,5 +1,6 @@
 package com.marcelo721.SEI.web.controllers;
 
+import com.marcelo721.SEI.entities.Subject;
 import com.marcelo721.SEI.entities.User;
 import com.marcelo721.SEI.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -38,5 +39,11 @@ public class UserController {
     public ResponseEntity<User> addSubject(@PathVariable Long userId, @PathVariable Long subjectId) {
         User student = userService.addSubject(userId, subjectId);
         return ResponseEntity.ok(student);
+    }
+
+    @GetMapping("/{id}/subjects")
+    public ResponseEntity<List<Subject>> findAllSubjectsByUserId(@PathVariable Long id) {
+        List<Subject> subjects = userService.getSubjects(id);
+        return ResponseEntity.ok(subjects);
     }
 }
