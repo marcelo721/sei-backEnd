@@ -15,7 +15,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    
+
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User obj = userService.save(user);
@@ -32,5 +32,11 @@ public class UserController {
     public ResponseEntity<List<User>> getAll() {
         List<User> users = userService.findAll();
         return ResponseEntity.ok(users);
+    }
+
+    @PostMapping("/{userId}/subjects/{subjectId}")
+    public ResponseEntity<User> addSubject(@PathVariable Long userId, @PathVariable Long subjectId) {
+        User student = userService.addSubject(userId, subjectId);
+        return ResponseEntity.ok(student);
     }
 }

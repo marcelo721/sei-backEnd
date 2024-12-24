@@ -1,6 +1,8 @@
 package com.marcelo721.SEI.services;
 
+import com.marcelo721.SEI.entities.Subject;
 import com.marcelo721.SEI.entities.User;
+import com.marcelo721.SEI.repositories.SubjectRepository;
 import com.marcelo721.SEI.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final SubjectRepository subjectRepository;
 
     @Transactional()
     public User save(User user) {
@@ -31,5 +34,14 @@ public class UserService {
     @Transactional(readOnly = true)
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Transactional
+    public User addSubject(Long userId, Long subjectId) {
+        User user = userRepository.findById(userId).get();
+        Subject subject = subjectRepository.findById(subjectId).get();
+        user.getSubjects().add(subject);
+
+        return userRepository.save(user);
     }
 }

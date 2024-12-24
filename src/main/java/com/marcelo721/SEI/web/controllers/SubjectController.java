@@ -1,7 +1,9 @@
 package com.marcelo721.SEI.web.controllers;
 
 import com.marcelo721.SEI.entities.Subject;
+import com.marcelo721.SEI.entities.User;
 import com.marcelo721.SEI.services.SubjectService;
+import com.marcelo721.SEI.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import java.util.List;
 public class SubjectController {
 
     private final SubjectService subjectService;
+    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<Subject> addSubject(@RequestBody Subject subject) {
