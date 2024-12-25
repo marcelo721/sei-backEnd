@@ -26,4 +26,7 @@ public class Topic {
     @ManyToOne()
     @JoinColumn(name = "subject_id")
     private Subject subject;
+
+    @OneToOne(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true)
+    private Resume resume;
 }
