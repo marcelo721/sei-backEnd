@@ -1,6 +1,7 @@
 package com.marcelo721.SEI.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.marcelo721.SEI.entities.enums.Semester;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +33,12 @@ public class Subject {
     @ManyToMany(mappedBy = "subjects")
     private Set<User> users = new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
+    private Semester semester;
+
     @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER)
     private List<Topic> topics = new ArrayList<>();
+
+
+
 }

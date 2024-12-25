@@ -3,6 +3,9 @@ package com.marcelo721.SEI.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -29,4 +32,7 @@ public class Topic {
 
     @OneToOne(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true)
     private Resume resume;
+
+    @OneToMany(mappedBy = "topic")
+    private Set<Video> videos = new HashSet<>();
 }
