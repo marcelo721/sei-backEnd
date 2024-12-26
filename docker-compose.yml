@@ -8,3 +8,26 @@ services:
       POSTGRES_PASSWORD: example
     ports:
       - "5432:5432"
+    networks:
+      - erudio-network
+
+  app:
+    image: sei/app
+    restart: always
+    build: .
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: example
+    ports:
+      - "8080:8080"
+    command: mvn spring-boot:run
+    depends_on:
+      - db
+    networks:
+      - erudio-network
+
+
+networks:
+  erudio-network:
+    driver: bridge
