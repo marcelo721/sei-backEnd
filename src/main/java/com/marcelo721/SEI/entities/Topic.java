@@ -33,6 +33,6 @@ public class Topic {
     @OneToOne(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true)
     private Resume resume;
 
-    @OneToMany(mappedBy = "topic")
+    @OneToMany(mappedBy = "topic", fetch = FetchType.EAGER)
     private Set<Video> videos = new HashSet<>();
 }

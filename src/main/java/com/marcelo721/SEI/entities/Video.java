@@ -1,5 +1,6 @@
 package com.marcelo721.SEI.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,5 +22,6 @@ public class Video {
 
     @ManyToOne()
     @JoinColumn(name = "topic_id")
+    @JsonIgnore
     private Topic topic;
 }
