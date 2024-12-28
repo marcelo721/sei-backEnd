@@ -44,8 +44,4 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    @Transactional(readOnly = true)
-    public List<Subject> getSubjects(Long idUser) {
-        return subjectRepository.findAllSubjectsByUserId(idUser);
-    }
 }

@@ -36,4 +36,10 @@ public class TopicController {
         Topic topic = topicService.findById(id);
         return ResponseEntity.ok(TopicResponseDto.toDto(topic));
     }
+
+    @GetMapping("/subjectId/{id}")
+    public ResponseEntity<List<TopicResponseDto>> findBySubjectId(@PathVariable Long id) {
+        List<Topic> topics = topicService.getTopicsBySubject(id);
+        return ResponseEntity.ok(TopicResponseDto.toListDto(topics));
+    }
 }

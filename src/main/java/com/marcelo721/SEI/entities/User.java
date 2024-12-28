@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -41,13 +40,10 @@ public class User {
     private Role role = Role.STUDENT;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_subjects",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "subject_id")
     )
     private Set<Subject> subjects = new HashSet<>();
-
-
-
 }

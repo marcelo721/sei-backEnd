@@ -46,9 +46,4 @@ public class UserController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("/{id}/subjects")
-    public ResponseEntity<List<Subject>> findAllSubjectsByUserId(@PathVariable Long id) {
-        List<Subject> subjects = userService.getSubjects(id);
-        return ResponseEntity.ok(subjects);
-    }
 }

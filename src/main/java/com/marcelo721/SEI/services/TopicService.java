@@ -43,4 +43,9 @@ public class TopicService {
         return topicRepository.findById(id).
                 orElseThrow(() -> new EntityNotFoundException("Topic Not Found"));
     }
+
+    @Transactional(readOnly = true)
+    public List<Topic> getTopicsBySubject(Long idSubject) {
+        return topicRepository.findTopicsBySubject(idSubject);
+    }
 }

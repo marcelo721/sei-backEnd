@@ -1,7 +1,6 @@
 package com.marcelo721.SEI.web.controllers;
 
 import com.marcelo721.SEI.entities.Subject;
-import com.marcelo721.SEI.entities.User;
 import com.marcelo721.SEI.services.SubjectService;
 import com.marcelo721.SEI.services.UserService;
 import com.marcelo721.SEI.web.dto.SubjectDto.SubjectCreateDto;
@@ -37,5 +36,21 @@ public class SubjectController {
     public ResponseEntity<List<SubjectResponseDto>> getAll() {
         List<Subject> subjects = subjectService.findAll();
         return ResponseEntity.ok(SubjectResponseDto.toListDto(subjects));
+    }
+
+    @GetMapping("/{id}/subjects")
+    public ResponseEntity<List<Subject>> findAllSubjectsByUserId(@PathVariable Long id) {
+        List<Subject> subjects = subjectService.getSubjectsByUserId(id);
+        return ResponseEntity.ok(subjects);
+    }
+
+    @GetMapping("/by-semester/{semesterNumber}")
+    public ResponseEntity<List<Subject>> getSubjectsBySemester(@PathVariable int semesterNumber) {
+        try {
+            List<Subject> subjects = subjectService.getSubjectsBySemesterNumber(semesterNumber);
+            return ResponseEntity.ok(subjects);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 }
