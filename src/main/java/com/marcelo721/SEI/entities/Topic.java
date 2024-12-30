@@ -35,4 +35,7 @@ public class Topic {
 
     @OneToMany(mappedBy = "topic", fetch = FetchType.EAGER)
     private Set<Video> videos = new HashSet<>();
+
+    @OneToMany(mappedBy = "topic", fetch = FetchType.EAGER)
+    private Set<Exercise> exercises = new HashSet<>();
 }
