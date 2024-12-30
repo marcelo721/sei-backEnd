@@ -2,6 +2,7 @@ package com.marcelo721.SEI.web.controllers;
 
 import com.marcelo721.SEI.entities.Exercise;
 import com.marcelo721.SEI.services.ExerciseService;
+import com.marcelo721.SEI.web.dto.ExerciseDto.ExerciseCreateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class ExerciseController {
     private final ExerciseService exerciseService;
 
     @PostMapping
-    public ResponseEntity<Exercise> save(@RequestBody Exercise exercise) {
+    public ResponseEntity<Exercise> save(@RequestBody ExerciseCreateDto exercise) {
         Exercise saved = exerciseService.save(exercise);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
