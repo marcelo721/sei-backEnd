@@ -45,10 +45,10 @@ public class SubjectController {
     }
 
     @GetMapping("/by-semester/{semesterNumber}")
-    public ResponseEntity<List<Subject>> getSubjectsBySemester(@PathVariable int semesterNumber) {
+    public ResponseEntity<List<SubjectResponseDto>> getSubjectsBySemester(@PathVariable int semesterNumber) {
         try {
             List<Subject> subjects = subjectService.getSubjectsBySemesterNumber(semesterNumber);
-            return ResponseEntity.ok(subjects);
+            return ResponseEntity.ok(SubjectResponseDto.toListDto(subjects));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
         }
