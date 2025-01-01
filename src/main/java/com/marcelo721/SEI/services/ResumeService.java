@@ -3,9 +3,8 @@ package com.marcelo721.SEI.services;
 import com.marcelo721.SEI.entities.Resume;
 import com.marcelo721.SEI.entities.Topic;
 import com.marcelo721.SEI.repositories.ResumeRepository;
-import com.marcelo721.SEI.repositories.TopicRepository;
+import com.marcelo721.SEI.services.exceptions.EntityNotFoundException;
 import com.marcelo721.SEI.web.dto.resumeDto.ResumeCreateDto;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +17,12 @@ import java.util.Optional;
 public class ResumeService {
 
     private final ResumeRepository resumeRepository;
-    private final TopicRepository topicRepository;
+    private final TopicService topicService;
 
     @Transactional
     public Resume save(ResumeCreateDto resume) {
 
-        Topic topic = topicRepository.findById(resume.idTopic()).get();
+        Topic topic = topicService.findById(resume.idTopic());
         Resume saved = new Resume();
         saved.setTopic(topic);
         saved.setText(resume.text());

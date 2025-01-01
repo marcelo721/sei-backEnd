@@ -39,7 +39,7 @@ public class SubjectController {
         return ResponseEntity.ok(SubjectResponseDto.toListDto(subjects));
     }
 
-    @GetMapping("/{id}/subjects")
+    @GetMapping("/idUser/{id}")
     public ResponseEntity<List<Subject>> findAllSubjectsByUserId(@PathVariable Long id) {
         List<Subject> subjects = subjectService.getSubjectsByUserId(id);
         return ResponseEntity.ok(subjects);

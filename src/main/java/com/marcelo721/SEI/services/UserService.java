@@ -4,24 +4,31 @@ import com.marcelo721.SEI.entities.Subject;
 import com.marcelo721.SEI.entities.User;
 import com.marcelo721.SEI.repositories.SubjectRepository;
 import com.marcelo721.SEI.repositories.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.marcelo721.SEI.services.exceptions.EmailUniqueViolationException;
+import com.marcelo721.SEI.services.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-    private final SubjectRepository subjectRepository;
+    private final SubjectService subjectService;
 
     @Transactional()
     public User save(User user) {
-        return userRepository.save(user);
+
+        try {
+            return userRepository.save(user);
+
+        }catch (DataIntegrityViolationException e){
+            throw new EmailUniqueViolationException(String.format("Email {%s} already registered ", user.getEmail()));
+        }
     }
 
     @Transactional(readOnly = true)
@@ -37,8 +44,8 @@ public class UserService {
 
     @Transactional
     public User addSubject(Long userId, Long subjectId) {
-        User user = userRepository.findById(userId).get();
-        Subject subject = subjectRepository.findById(subjectId).get();
+        User user = findById(userId);
+        Subject subject = subjectService.findById(subjectId);
         user.getSubjects().add(subject);
 
         return userRepository.save(user);

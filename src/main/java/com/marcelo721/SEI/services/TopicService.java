@@ -3,10 +3,9 @@ package com.marcelo721.SEI.services;
 
 import com.marcelo721.SEI.entities.Subject;
 import com.marcelo721.SEI.entities.Topic;
-import com.marcelo721.SEI.repositories.SubjectRepository;
 import com.marcelo721.SEI.repositories.TopicRepository;
+import com.marcelo721.SEI.services.exceptions.EntityNotFoundException;
 import com.marcelo721.SEI.web.dto.TopicDto.TopicCreateDto;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +17,12 @@ import java.util.List;
 public class TopicService {
 
     private final TopicRepository topicRepository;
-    private final SubjectRepository subjectRepository;
+    private final SubjectService subjectService;
     @Transactional
 
     public Topic save(TopicCreateDto topic) {
-        Subject subject = subjectRepository
-                .findById(topic.idSubject()).orElseThrow(EntityNotFoundException::new);
+        Subject subject = subjectService
+                .findById(topic.idSubject());
 
         Topic topicEntity = new Topic();
         topicEntity.setName(topic.name());
@@ -46,6 +45,9 @@ public class TopicService {
 
     @Transactional(readOnly = true)
     public List<Topic> getTopicsBySubject(Long idSubject) {
+
+        Subject subject = subjectService.findById(idSubject);
+        if (subject == null) throw new EntityNotFoundException("Subject Not Found");
         return topicRepository.findTopicsBySubject(idSubject);
     }
 }
