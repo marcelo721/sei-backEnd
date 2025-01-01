@@ -4,6 +4,7 @@ package com.marcelo721.SEI.web.controllers;
 import com.marcelo721.SEI.entities.PastExam;
 import com.marcelo721.SEI.services.PastExamService;
 import com.marcelo721.SEI.web.dto.PastExam.PastExamCreateDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class PastExamController {
     private final PastExamService pastExamService;
 
     @PostMapping
-    public ResponseEntity<PastExam> createPastExam(@RequestBody PastExamCreateDto pastExam) {
+    public ResponseEntity<PastExam> createPastExam(@RequestBody @Valid PastExamCreateDto pastExam) {
         PastExam response = pastExamService.save(pastExam);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

@@ -1,6 +1,7 @@
 package com.marcelo721.SEI.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.marcelo721.SEI.entities.enums.Semester;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,9 +37,11 @@ public class Subject {
     @Enumerated(EnumType.STRING)
     private Semester semester;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER)
     private List<Topic> topics = new ArrayList<>();
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER)
     private List<PastExam> pastExams = new ArrayList<>();
 

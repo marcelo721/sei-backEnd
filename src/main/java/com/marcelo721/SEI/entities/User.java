@@ -1,6 +1,7 @@
 package com.marcelo721.SEI.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.marcelo721.SEI.entities.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,7 @@ public class User {
     private Role role = Role.STUDENT;
 
     @JsonIgnore
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_subjects",
             joinColumns = @JoinColumn(name = "user_id"),

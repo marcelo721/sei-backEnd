@@ -5,6 +5,7 @@ import com.marcelo721.SEI.services.SubjectService;
 import com.marcelo721.SEI.services.UserService;
 import com.marcelo721.SEI.web.dto.SubjectDto.SubjectCreateDto;
 import com.marcelo721.SEI.web.dto.SubjectDto.SubjectResponseDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class SubjectController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<SubjectResponseDto> save(@RequestBody SubjectCreateDto subject) {
+    public ResponseEntity<SubjectResponseDto> save(@RequestBody @Valid SubjectCreateDto subject) {
         Subject obj = subjectService.save(subject.toSubject());
         return ResponseEntity.status(HttpStatus.CREATED).body(SubjectResponseDto.toDto(obj));
     }

@@ -4,6 +4,7 @@ import com.marcelo721.SEI.entities.Resume;
 import com.marcelo721.SEI.services.ResumeService;
 import com.marcelo721.SEI.web.dto.resumeDto.ResumeCreateDto;
 import com.marcelo721.SEI.web.dto.resumeDto.ResumeResponseDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class ResumeController {
     private final ResumeService resumeService;
 
     @PostMapping
-    public ResponseEntity<ResumeResponseDto> save(@RequestBody ResumeCreateDto resume) {
+    public ResponseEntity<ResumeResponseDto> save(@RequestBody @Valid ResumeCreateDto resume) {
         Resume saved = resumeService.save(resume);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResumeResponseDto.toDto(saved));
     }

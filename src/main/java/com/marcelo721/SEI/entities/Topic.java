@@ -1,5 +1,6 @@
 package com.marcelo721.SEI.entities;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,9 +34,11 @@ public class Topic {
     @OneToOne(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true)
     private Resume resume;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @OneToMany(mappedBy = "topic", fetch = FetchType.EAGER)
     private Set<Video> videos = new HashSet<>();
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @OneToMany(mappedBy = "topic", fetch = FetchType.EAGER)
     private Set<Exercise> exercises = new HashSet<>();
 }
