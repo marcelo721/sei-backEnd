@@ -22,7 +22,7 @@ public class PastExam {
     @Column(nullable = false, name = "title")
     private String title;
 
-    @Column(nullable = false, name = "exercise_url")
+    @Column(nullable = false, name = "exercise_url", unique = true)
     private String url;
 
     @ManyToOne()
