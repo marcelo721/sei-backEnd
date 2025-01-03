@@ -8,6 +8,7 @@ import com.marcelo721.SEI.services.exceptions.EmailUniqueViolationException;
 import com.marcelo721.SEI.services.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +20,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final SubjectService subjectService;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional()
     public User save(User user) {
 
         try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userRepository.save(user);
 
         }catch (DataIntegrityViolationException e){
@@ -49,6 +52,12 @@ public class UserService {
         user.getSubjects().add(subject);
 
         return userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).
+                orElseThrow(() -> new EntityNotFoundException("user not found"));
     }
 
 }

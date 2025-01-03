@@ -1,5 +1,6 @@
 package com.marcelo721.SEI.web.exceptions;
 
+import com.auth0.jwt.exceptions.JWTCreationException;
 import com.marcelo721.SEI.services.exceptions.EmailUniqueViolationException;
 import com.marcelo721.SEI.services.exceptions.EntityNotFoundException;
 import com.marcelo721.SEI.services.exceptions.SemesterInvalidException;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.nio.file.AccessDeniedException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.NoSuchElementException;
 
 @RestControllerAdvice
@@ -117,6 +120,37 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request, HttpStatus.NOT_FOUND, ex.getMessage() + " Esse usuário existe"));
+    }
+
+
+    @ExceptionHandler(JWTCreationException.class)
+    public ResponseEntity<ErrorMessage> jWTCreationException(JWTCreationException ex, HttpServletRequest request){
+
+        log.error("Api error !");
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.UNAUTHORIZED,"error generating token :" + ex.getMessage()));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorMessage> accessDeniedException( AccessDeniedException ex, HttpServletRequest request){
+
+        log.error("Api error !");
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.FORBIDDEN,"Not allowed:" + ex.getMessage()));
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<ErrorMessage> SQLIntegrityConstraintViolationException( SQLIntegrityConstraintViolationException ex, HttpServletRequest request){
+
+        log.error("Api error !");
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.CONFLICT,"Conflict when inserting record: duplicate entry" + ex.getMessage()));
     }
 
 }
