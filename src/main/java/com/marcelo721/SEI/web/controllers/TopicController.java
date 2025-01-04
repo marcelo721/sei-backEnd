@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class TopicController {
             }
     )
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TopicResponseDto> save(@RequestBody @Valid TopicCreateDto topic) {
         Topic savedTopic = topicService.save(topic);
 
@@ -60,6 +62,7 @@ public class TopicController {
             }
     )
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<TopicResponseDto>> findAll() {
         List<Topic> topics = topicService.findAll();
         return ResponseEntity.ok(TopicResponseDto.toListDto(topics));
@@ -80,6 +83,7 @@ public class TopicController {
             }
     )
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TopicResponseDto> findById(@PathVariable Long id) {
         Topic topic = topicService.findById(id);
         return ResponseEntity.ok(TopicResponseDto.toDto(topic));
@@ -102,6 +106,7 @@ public class TopicController {
     )
 
     @GetMapping("/subjectId/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<TopicResponseDto>> findBySubjectId(@PathVariable Long id) {
         List<Topic> topics = topicService.getTopicsBySubject(id);
         return ResponseEntity.ok(TopicResponseDto.toListDto(topics));

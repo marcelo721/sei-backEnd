@@ -59,7 +59,7 @@ public class User implements UserDetails {
         if (this.role == Role.ADMIN) {
             return List.of(
                     new SimpleGrantedAuthority("ROLE_ADMIN"),
-                    new SimpleGrantedAuthority("ROLE_SUDENT")
+                    new SimpleGrantedAuthority("ROLE_STUDENT")
             );
         }
         return List.of(

@@ -7,10 +7,12 @@ import com.marcelo721.SEI.services.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 
 @Configuration
 @RequiredArgsConstructor
+//@Profile("test")
 public class TestConfig implements CommandLineRunner {
 
     private final UserService userService;
@@ -257,7 +259,7 @@ public class TestConfig implements CommandLineRunner {
         User user = new User();
         user.setEmail("marcelo@alu.ufc.br");
         user.setPassword("123456");
-        user.setRole(Role.STUDENT);
+        user.setRole(Role.ADMIN);
         user.setName("marcelinho");
 
         user.getSubjects().add(subject1);

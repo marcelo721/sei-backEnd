@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,6 +43,7 @@ public class ExerciseController {
             }
     )
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Exercise> save(@RequestBody @Valid ExerciseCreateDto exercise) {
         Exercise saved = exerciseService.save(exercise);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
@@ -64,6 +66,7 @@ public class ExerciseController {
             }
     )
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Exercise>> findAll() {
         List<Exercise> all = exerciseService.findAll();
         return ResponseEntity.ok(all);
@@ -89,6 +92,7 @@ public class ExerciseController {
             }
     )
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Exercise> findById(@PathVariable Long id) {
         Exercise exercise = exerciseService.findById(id);
         return ResponseEntity.ok(exercise);

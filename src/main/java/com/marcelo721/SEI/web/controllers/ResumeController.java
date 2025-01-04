@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class ResumeController {
             }
     )
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ResumeResponseDto> save(@RequestBody @Valid ResumeCreateDto resume) {
         Resume saved = resumeService.save(resume);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResumeResponseDto.toDto(saved));
@@ -59,6 +61,7 @@ public class ResumeController {
             }
     )
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ResumeResponseDto>> findAll() {
         List<Resume> resumes = resumeService.findAll();
 
@@ -80,6 +83,7 @@ public class ResumeController {
             }
     )
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ResumeResponseDto> findById(@PathVariable Long id) {
         Resume resume = resumeService.findById(id);
         return ResponseEntity.ok(ResumeResponseDto.toDto(resume));

@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,7 +50,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(UserResponseDto.toDto(obj));
     }
 
-
     @Operation(
             summary = "find User by id", description = "resource to find User by id ",
             responses = {
@@ -69,9 +69,9 @@ public class UserController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
+    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #id == authentication.principal.id)")
+    public ResponseEntity<UserResponseDto> findById(@PathVariable Long id) {
         User obj = userService.findById(id);
-
         return ResponseEntity.ok(UserResponseDto.toDto(obj));
     }
 
@@ -92,11 +92,11 @@ public class UserController {
             }
     )
     @GetMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserResponseDto>> getAll() {
         List<User> users = userService.findAll();
         return ResponseEntity.ok(UserResponseDto.toListDto(users));
     }
-
 
     @Operation(
             summary = "add new subject", description = "This feature will add a new subject to the user's subject list.",
@@ -117,6 +117,7 @@ public class UserController {
             }
     )
     @PostMapping("/{userId}/subjects/{subjectId}")
+    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #id == authentication.principal.id)")
     public ResponseEntity<User> addSubject(@PathVariable Long userId, @PathVariable Long subjectId) {
         User student = userService.addSubject(userId, subjectId);
         return ResponseEntity.ok(student);

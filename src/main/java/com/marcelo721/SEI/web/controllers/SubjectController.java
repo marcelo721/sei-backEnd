@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,6 +43,7 @@ public class SubjectController {
             }
     )
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SubjectResponseDto> save(@RequestBody @Valid SubjectCreateDto subject) {
         Subject obj = subjectService.save(subject.toSubject());
         return ResponseEntity.status(HttpStatus.CREATED).body(SubjectResponseDto.toDto(obj));
@@ -62,7 +64,8 @@ public class SubjectController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<SubjectResponseDto> getSubject(@PathVariable Long id) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<SubjectResponseDto> getSubjectById(@PathVariable Long id) {
         Subject obj = subjectService.findById(id);
         return ResponseEntity.ok(SubjectResponseDto.toDto(obj));
     }
@@ -81,6 +84,7 @@ public class SubjectController {
             }
     )
     @GetMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<SubjectResponseDto>> getAll() {
         List<Subject> subjects = subjectService.findAll();
         return ResponseEntity.ok(SubjectResponseDto.toListDto(subjects));
@@ -103,6 +107,7 @@ public class SubjectController {
             }
     )
     @GetMapping("/idUser/{id}")
+    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #id == authentication.principal.id)")
     public ResponseEntity<List<Subject>> findAllSubjectsByUserId(@PathVariable Long id) {
         List<Subject> subjects = subjectService.getSubjectsByUserId(id);
         return ResponseEntity.ok(subjects);
@@ -124,6 +129,7 @@ public class SubjectController {
             }
     )
     @GetMapping("/by-semester/{semesterNumber}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<SubjectResponseDto>> getSubjectsBySemester(@PathVariable int semesterNumber) {
         try {
             List<Subject> subjects = subjectService.getSubjectsBySemesterNumber(semesterNumber);

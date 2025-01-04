@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class PastExamController {
             }
     )
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PastExam> createPastExam(@RequestBody @Valid PastExamCreateDto pastExam) {
         PastExam response = pastExamService.save(pastExam);
 
@@ -60,6 +62,7 @@ public class PastExamController {
             }
     )
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<PastExam>> getAllPastExams() {
         List<PastExam> response = pastExamService.findAll();
         return ResponseEntity.ok(response);
@@ -80,6 +83,7 @@ public class PastExamController {
             }
     )
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PastExam> getPastExamById(@PathVariable Long id) {
         PastExam response = pastExamService.findById(id);
         return ResponseEntity.ok(response);

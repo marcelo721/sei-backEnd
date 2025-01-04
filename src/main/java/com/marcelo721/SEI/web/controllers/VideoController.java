@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,6 +43,7 @@ public class VideoController {
             }
     )
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<VideoResponseDto> save(@RequestBody @Valid VideoCreateDto videoCreateDto){
 
         Video saved = videoService.save(videoCreateDto);
@@ -63,6 +65,7 @@ public class VideoController {
             }
     )
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<VideoResponseDto> getById(@PathVariable Long id){
         Video video = videoService.findById(id);
         return ResponseEntity.ok(VideoResponseDto.toDto(video));
@@ -82,6 +85,7 @@ public class VideoController {
             }
     )
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<VideoResponseDto>> getAll(){
         List<Video> all = videoService.findAll();
 
