@@ -2,6 +2,7 @@ package com.marcelo721.SEI.web.controllers;
 
 import com.marcelo721.SEI.entities.User;
 import com.marcelo721.SEI.services.UserService;
+import com.marcelo721.SEI.web.dto.UserDto.UpdatePasswordDto;
 import com.marcelo721.SEI.web.dto.UserDto.UserCreateDto;
 import com.marcelo721.SEI.web.dto.UserDto.UserResponseDto;
 import com.marcelo721.SEI.web.exceptions.ErrorMessage;
@@ -10,9 +11,11 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +27,7 @@ import java.util.List;
 @RequestMapping("api/v1/users")
 @RequiredArgsConstructor
 @Tag(name = "users", description = "contains all user resources")
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -52,6 +56,7 @@ public class UserController {
 
     @Operation(
             summary = "find User by id", description = "resource to find User by id ",
+            security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "User Found Successfully",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
@@ -77,6 +82,7 @@ public class UserController {
 
     @Operation(
             summary = "Find all users", description = "Resource to find all users",
+            security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200",description = "List of all registered users",
                             content = @Content(mediaType = "application/json",
@@ -100,6 +106,8 @@ public class UserController {
 
     @Operation(
             summary = "add new subject", description = "This feature will add a new subject to the user's subject list.",
+            security = @SecurityRequirement(name = "security"),
+
             responses = {
                     @ApiResponse(responseCode = "200", description = "subject added",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
@@ -121,6 +129,37 @@ public class UserController {
     public ResponseEntity<User> addSubject(@PathVariable Long userId, @PathVariable Long subjectId) {
         User student = userService.addSubject(userId, subjectId);
         return ResponseEntity.ok(student);
+    }
+
+    @Operation(
+            summary = "update password", description = "resource to update password",
+            security = @SecurityRequirement(name = "security"),
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "password updated successfully",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))),
+
+                    @ApiResponse(responseCode = "404", description = "User Not found",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+
+                    @ApiResponse(responseCode = "422", description = "Invalid data",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+
+                    @ApiResponse(responseCode = "403",
+                            description = "This user does not have permission to access this resource",
+                            content =  @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))),
+
+                    @ApiResponse(responseCode = "401",
+                            description = "This user is not authenticated",
+                            content =  @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class)))
+            }
+    )
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #id == authentication.principal.id)")
+    public ResponseEntity<Void> updatePassword( @PathVariable Long id,  @Valid @RequestBody UpdatePasswordDto user){
+
+        log.info("Updating password for user with id: {}", id);
+        User obj = userService.updatePassword(user.pastPassword(),user.newPassword(), user.confirmPassword(), id);
+        return ResponseEntity.noContent().build();
     }
 
 }

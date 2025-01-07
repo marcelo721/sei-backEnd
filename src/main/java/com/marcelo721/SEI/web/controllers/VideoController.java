@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class VideoController {
 
     @Operation(
             summary = "Create a new video resource",
+            security = @SecurityRequirement(name = "security"),
             description = "Endpoint to create a new video in the system. The video details must be provided in the request body and comply with validation rules.",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Video created successfully",
@@ -52,6 +54,7 @@ public class VideoController {
 
     @Operation(
             summary = "Retrieve a video by its ID",
+            security = @SecurityRequirement(name = "security"),
             description = "Endpoint to retrieve the details of a specific video using its unique identifier.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Video retrieved successfully",
@@ -73,6 +76,7 @@ public class VideoController {
 
     @Operation(
             summary = "Retrieve all videos",
+            security = @SecurityRequirement(name = "security"),
             description = "Endpoint to retrieve a list of all videos available in the system.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of videos",

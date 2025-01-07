@@ -6,6 +6,7 @@ import com.marcelo721.SEI.repositories.SubjectRepository;
 import com.marcelo721.SEI.repositories.UserRepository;
 import com.marcelo721.SEI.services.exceptions.EmailUniqueViolationException;
 import com.marcelo721.SEI.services.exceptions.EntityNotFoundException;
+import com.marcelo721.SEI.services.exceptions.PasswordInvalidException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,6 +59,24 @@ public class UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).
                 orElseThrow(() -> new EntityNotFoundException("user not found"));
+    }
+
+    @Transactional
+    public User updatePassword(String currentPassword, String newPassword, String confirmNewPassword, long id){
+
+        if (!newPassword.equals(confirmNewPassword)){
+            throw new PasswordInvalidException("the confirmation passwords are different");
+        }
+
+        User user = findById(id);
+
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())){
+            throw  new PasswordInvalidException("The password is wrong");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return user;
     }
 
 }

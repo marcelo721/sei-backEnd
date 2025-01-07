@@ -3,6 +3,7 @@ package com.marcelo721.SEI.web.exceptions;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.marcelo721.SEI.services.exceptions.EmailUniqueViolationException;
 import com.marcelo721.SEI.services.exceptions.EntityNotFoundException;
+import com.marcelo721.SEI.services.exceptions.PasswordInvalidException;
 import com.marcelo721.SEI.services.exceptions.SemesterInvalidException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -151,6 +152,17 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request, HttpStatus.FORBIDDEN,"Not allowed:" + ex.getMessage()));
+    }
+
+    @ExceptionHandler(PasswordInvalidException.class)
+    public ResponseEntity<ErrorMessage> passwordInvalidException(RuntimeException ex,
+                                                                 HttpServletRequest request){
+        log.error("Api Error", ex);
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.UNPROCESSABLE_ENTITY,ex.getMessage()));
+
     }
 
 }

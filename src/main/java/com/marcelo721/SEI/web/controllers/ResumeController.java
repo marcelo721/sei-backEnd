@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class ResumeController {
 
     @Operation(
             summary = "Create a new resume",
+            security = @SecurityRequirement(name = "security"),
             description = "Endpoint to create a new resume. The input data must be valid and adhere to the system's requirements.",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Resume created successfully",
@@ -49,6 +51,7 @@ public class ResumeController {
 
     @Operation(
             summary = "Retrieve all resumes",
+            security = @SecurityRequirement(name = "security"),
             description = "Endpoint to retrieve a list of all resumes stored in the system.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of resumes",
@@ -70,6 +73,7 @@ public class ResumeController {
 
     @Operation(
             summary = "Retrieve a resume by ID",
+            security = @SecurityRequirement(name = "security"),
             description = "Endpoint to retrieve a specific resume by its unique identifier.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successfully retrieved the resume",

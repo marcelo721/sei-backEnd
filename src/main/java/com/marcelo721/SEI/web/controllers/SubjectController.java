@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class SubjectController {
 
     @Operation(
             summary = "Create a new subject",
+            security = @SecurityRequirement(name = "security"),
             description = "Endpoint to create a new academic subject with all necessary validations.",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Subject created successfully",
@@ -51,6 +53,7 @@ public class SubjectController {
 
     @Operation(
             summary = "Retrieve a subject by ID",
+            security = @SecurityRequirement(name = "security"),
             description = "Endpoint to retrieve details of a specific subject using its unique identifier.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successfully retrieved the subject",
@@ -72,6 +75,7 @@ public class SubjectController {
 
     @Operation(
             summary = "Retrieve all subjects",
+            security = @SecurityRequirement(name = "security"),
             description = "Endpoint to retrieve a list of all academic subjects stored in the system.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of subjects",
@@ -93,6 +97,7 @@ public class SubjectController {
 
     @Operation(
             summary = "Retrieve subjects by user ID",
+            security = @SecurityRequirement(name = "security"),
             description = "Endpoint to retrieve all subjects associated with a specific user based on their ID.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successfully retrieved the subjects",
@@ -115,6 +120,7 @@ public class SubjectController {
 
     @Operation(
             summary = "Retrieve subjects by semester number",
+            security = @SecurityRequirement(name = "security"),
             description = "Endpoint to retrieve subjects for a specific semester based on the semester number.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successfully retrieved the subjects for the specified semester",

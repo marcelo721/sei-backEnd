@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class PastExamController {
 
     @Operation(
             summary = "Create a new past exam record",
+            security = @SecurityRequirement(name = "security"),
             description = "Endpoint to create a new past exam record in the system, with all necessary validations.",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Past exam created successfully",
@@ -50,6 +52,7 @@ public class PastExamController {
 
     @Operation(
             summary = "Retrieve all past exams",
+            security = @SecurityRequirement(name = "security"),
             description = "Endpoint to retrieve a list of all past exam records available in the system.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of past exams",
@@ -70,6 +73,7 @@ public class PastExamController {
 
     @Operation(
             summary = "Retrieve a past exam by ID",
+            security = @SecurityRequirement(name = "security"),
             description = "Endpoint to retrieve a specific past exam record by its unique identifier.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successfully retrieved the past exam",

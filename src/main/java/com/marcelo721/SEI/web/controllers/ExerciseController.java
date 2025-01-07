@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class ExerciseController {
 
     @Operation(
             summary = "create a new exercise", description = "resource to create a exercise",
+            security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "201", description = "resource created successfully",
                             content = @Content(mediaType= "application/json", schema = @Schema(implementation = UserResponseDto.class))),
@@ -51,6 +53,7 @@ public class ExerciseController {
 
     @Operation(
             summary = "Find all exercises", description = "Resource to find all exercises",
+            security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200",description = "List of all exercises",
                             content = @Content(mediaType = "application/json",
@@ -75,6 +78,7 @@ public class ExerciseController {
 
     @Operation(
             summary = "find exercise by id", description = "resource to find exercise by id ",
+            security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "exercise Found Successfully",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),

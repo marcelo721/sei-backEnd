@@ -43,8 +43,8 @@ public class SpringSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.
-                                requestMatchers(HttpMethod.POST, "api/v1/users").permitAll().
-                                requestMatchers(HttpMethod.POST, "api/v1/login").permitAll().
+                                requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll().
+                                requestMatchers(HttpMethod.POST, "/api/v1/login").permitAll().
                                 requestMatchers(DOCUMENTATION_OPENAPI).permitAll().anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class)
