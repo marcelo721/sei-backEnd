@@ -1,7 +1,9 @@
 package com.marcelo721.SEI.web.controllers;
 
 import com.marcelo721.SEI.entities.User;
+import com.marcelo721.SEI.entities.enums.StatusAccount;
 import com.marcelo721.SEI.services.UserService;
+import com.marcelo721.SEI.utils.EmailUtils;
 import com.marcelo721.SEI.web.dto.UserDto.UpdatePasswordDto;
 import com.marcelo721.SEI.web.dto.UserDto.UserCreateDto;
 import com.marcelo721.SEI.web.dto.UserDto.UserResponseDto;
@@ -16,6 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -160,6 +163,18 @@ public class UserController {
         log.info("Updating password for user with id: {}", id);
         User obj = userService.updatePassword(user.pastPassword(),user.newPassword(), user.confirmPassword(), id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/verify")
+    public String verifyCode(@Param("code") String code){
+
+        if (userService.verify(code) == StatusAccount.ENABLED){
+            return EmailUtils.verifyEnabledAccount();
+        }else if (userService.verify(code) == StatusAccount.ALREADY_ENABLED){
+            return EmailUtils.verifyAccountAlreadyEnabled();
+        } else {
+            return EmailUtils.reportAccountNotEnabled();
+        }
     }
 
 }

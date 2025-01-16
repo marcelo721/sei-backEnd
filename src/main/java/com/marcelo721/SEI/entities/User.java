@@ -3,6 +3,7 @@ package com.marcelo721.SEI.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.marcelo721.SEI.entities.enums.Role;
+import com.marcelo721.SEI.entities.enums.StatusAccount;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,6 +41,13 @@ public class User implements UserDetails {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "verification_code")
+    private String verificationCode;
+
+    @Column(name = "status_account")
+    @Enumerated(EnumType.STRING)
+    private StatusAccount statusAccount;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
