@@ -2,6 +2,7 @@ package com.marcelo721.SEI.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.marcelo721.SEI.entities.enums.Course;
 import com.marcelo721.SEI.entities.enums.Role;
 import com.marcelo721.SEI.entities.enums.StatusAccount;
 import jakarta.persistence.*;
@@ -52,6 +53,10 @@ public class User implements UserDetails {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role = Role.STUDENT;
+
+    @Column(name = "course")
+    @Enumerated(EnumType.STRING)
+    private Course course;
 
     @JsonIgnore
     @JsonInclude(JsonInclude.Include.NON_NULL)

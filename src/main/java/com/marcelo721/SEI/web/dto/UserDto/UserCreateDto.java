@@ -1,8 +1,10 @@
 package com.marcelo721.SEI.web.dto.UserDto;
 
 import com.marcelo721.SEI.entities.User;
+import com.marcelo721.SEI.entities.enums.Course;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record UserCreateDto(
@@ -23,7 +25,10 @@ public record UserCreateDto(
                 regexp = "^[a-zA-Z0-9._%+-]+@alu\\.ufc\\.br$",
                 message = "O e-mail deve ser válido e terminar com @alu.ufc.br."
         )
-        String email
+        String email,
+
+        @NotNull
+        Course course
 ) {
     public User toUser() {
 
@@ -31,7 +36,7 @@ public record UserCreateDto(
         user.setName(name);
         user.setPassword(password);
         user.setEmail(email);
-
+        user.setCourse(course);
         return user;
     }
 }
