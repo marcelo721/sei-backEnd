@@ -4,7 +4,6 @@ import com.marcelo721.SEI.entities.User;
 import com.marcelo721.SEI.utils.EmailUtils;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -15,15 +14,12 @@ import java.io.UnsupportedEncodingException;
 @Service
 public class EmailService {
 
-
     private final JavaMailSender mailSender;
-
     String verifyUrl = "http://localhost:8080/api/v1/users/verify?code=";
 
     public EmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
-
 
     @Async
     public void sendVerifyEmail(User user) throws MessagingException, UnsupportedEncodingException {
@@ -47,7 +43,5 @@ public class EmailService {
         helper.setText(content, true);
 
         mailSender.send(message);
-
     }
-
 }

@@ -1,6 +1,7 @@
 package com.marcelo721.SEI.web.controllers;
 
 import com.marcelo721.SEI.entities.User;
+import com.marcelo721.SEI.entities.enums.StatusAccount;
 import com.marcelo721.SEI.jwt.JwtToken;
 import com.marcelo721.SEI.repositories.UserRepository;
 import com.marcelo721.SEI.services.AuthenticationService;
@@ -58,7 +59,6 @@ public class AuthenticationController {
     public ResponseEntity<?> auth(@RequestBody @Valid UserLoginDto userLoginDto, HttpServletRequest request){
 
         User user = userRepository.findByEmail(userLoginDto.email()).get();
-
 
         try {
             var userAuthenticationToken = new UsernamePasswordAuthenticationToken(userLoginDto.email(), userLoginDto.password());

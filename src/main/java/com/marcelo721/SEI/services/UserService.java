@@ -91,7 +91,6 @@ public class UserService {
     }
 
     public StatusAccount verify(String code) {
-
         User user = userRepository.findByVerificationCode(code);
 
         if (user == null || user.getStatusAccount().equals(StatusAccount.ENABLED)) {

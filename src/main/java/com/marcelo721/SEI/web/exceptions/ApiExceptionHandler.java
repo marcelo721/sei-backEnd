@@ -1,10 +1,7 @@
 package com.marcelo721.SEI.web.exceptions;
 
 import com.auth0.jwt.exceptions.JWTCreationException;
-import com.marcelo721.SEI.services.exceptions.EmailUniqueViolationException;
-import com.marcelo721.SEI.services.exceptions.EntityNotFoundException;
-import com.marcelo721.SEI.services.exceptions.PasswordInvalidException;
-import com.marcelo721.SEI.services.exceptions.SemesterInvalidException;
+import com.marcelo721.SEI.services.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -165,4 +162,36 @@ public class ApiExceptionHandler {
 
     }
 
+    @ExceptionHandler(ExpiredTokenException.class)
+    public ResponseEntity<ErrorMessage> expiredTokenException(RuntimeException ex,
+                                                                 HttpServletRequest request){
+        log.error("Api Error", ex);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.BAD_REQUEST,ex.getMessage()));
+
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorMessage> IllegalArgumentException(RuntimeException ex,
+                                                              HttpServletRequest request){
+        log.error("Api Error", ex);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.BAD_REQUEST,ex.getMessage()));
+
+    }
+
+    @ExceptionHandler(AccountNotEnabledException.class)
+    public ResponseEntity<ErrorMessage> AccountNotEnabledException(RuntimeException ex,
+                                                                 HttpServletRequest request){
+        log.error("Api Error", ex);
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.UNAUTHORIZED,ex.getMessage()));
+
+    }
 }

@@ -526,4 +526,50 @@ public class EmailUtils {
                     "</body>\n" +
                     "</html>\n";
         }
+
+    public static String resetEmailMime() {
+        return "<!DOCTYPE html>\n" +
+                "<html>\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>Renovação de Senha</title>\n" +
+                "    <style>\n" +
+                "        body {\n" +
+                "            font-family: Arial, sans-serif;\n" +
+                "            line-height: 1.6;\n" +
+                "            color: #333;\n" +
+                "        }\n" +
+                "        .container {\n" +
+                "            text-align: center;\n" +
+                "            padding: 20px;\n" +
+                "        }\n" +
+                "        .btn {\n" +
+                "            display: inline-block;\n" +
+                "            padding: 10px 20px;\n" +
+                "            margin: 20px 0;\n" +
+                "            font-size: 16px;\n" +
+                "            color: #fff;\n" +
+                "            background-color: #007BFF;\n" +
+                "            text-decoration: none;\n" +
+                "            border-radius: 5px;\n" +
+                "        }\n" +
+                "        .btn:hover {\n" +
+                "            background-color: #0056b3;\n" +
+                "        }\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "    <div class=\"container\">\n" +
+                "        <h1>Renovação de Senha</h1>\n" +
+                "        <p>Olá,</p>\n" +
+                "        <p>Recebemos uma solicitação para renovar sua senha. Se você fez essa solicitação, clique no botão abaixo para continuar. Caso contrário, ignore este email.</p>\n" +
+                "        <a href=\"${resetLink}\" class=\"btn\">Renovar Senha</a>\n" +
+                "        <p>Se o botão acima não funcionar, copie e cole o seguinte link no seu navegador:</p>\n" +
+                "        <p><a href=\"${resetLink}\">${resetLink}</a></p>\n" +
+                "        <p>Atenciosamente,<br>Sua equipe de suporte</p>\n" +
+                "    </div>\n" +
+                "</body>\n" +
+                "</html>";
     }
+
+}

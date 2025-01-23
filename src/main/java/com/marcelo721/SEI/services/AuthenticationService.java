@@ -1,8 +1,10 @@
 package com.marcelo721.SEI.services;
 
 import com.marcelo721.SEI.entities.User;
+import com.marcelo721.SEI.entities.enums.StatusAccount;
 import com.marcelo721.SEI.jwt.JwtToken;
 import com.marcelo721.SEI.jwt.JwtUtils;
+import com.marcelo721.SEI.services.exceptions.AccountNotEnabledException;
 import com.marcelo721.SEI.web.dto.UserDto.UserLoginDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +23,9 @@ public class AuthenticationService implements UserDetailsService {
     }
     public JwtToken getTokenAuthenticated(UserLoginDto userLoginDto){
         User user = userService.findByEmail(userLoginDto.email());
+        if (user.getStatusAccount() == StatusAccount.DISABLED)
+            throw new AccountNotEnabledException("ative sua conta para acessar a aplicação");
+
         return JwtUtils.createToken(user);
     }
 }
