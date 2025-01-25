@@ -5,7 +5,11 @@ import com.marcelo721.SEI.entities.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public record UserResponseDto(String name, String email, Long id,String StatusAccount,String course) {
+public record UserResponseDto(String name,
+                              String email,
+                              Long id,
+                              String StatusAccount,
+                              String course) {
 
     public static UserResponseDto toDto(User user){
         return new UserResponseDto(user.getName(), user.getEmail(), user.getId(),
