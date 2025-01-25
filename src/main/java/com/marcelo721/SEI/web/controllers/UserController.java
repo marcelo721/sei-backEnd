@@ -180,6 +180,22 @@ public class UserController {
     }
 
 
+    @Operation(
+            summary = "resource to get user data", description = "resource to get user data by authentication token ",
+            security = @SecurityRequirement(name = "security"),
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User authenticated Successfully",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
+
+                    @ApiResponse(responseCode = "403",
+                            description = "This user does not have permission to access this resource",
+                            content =  @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))),
+
+                    @ApiResponse(responseCode = "401",
+                            description = "This user is not authenticated",
+                            content =  @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class)))
+            }
+    )
     @GetMapping("/me")
     public ResponseEntity<UserResponseDto> getUserData(@AuthenticationPrincipal UserDetails userDetails) {
         UserResponseDto user = UserResponseDto.toDto(userService.findByEmail(userDetails.getUsername()));
