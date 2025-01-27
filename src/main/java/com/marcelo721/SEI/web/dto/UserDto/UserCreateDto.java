@@ -21,10 +21,6 @@ public record UserCreateDto(
 
         @NotBlank
         @Email
-        @Pattern(
-                regexp = "^[a-zA-Z0-9._%+-]+@alu\\.ufc\\.br$",
-                message = "O e-mail deve ser válido e terminar com @alu.ufc.br."
-        )
         String email,
 
         @NotNull

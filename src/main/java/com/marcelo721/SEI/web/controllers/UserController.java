@@ -179,7 +179,6 @@ public class UserController {
         }
     }
 
-
     @Operation(
             summary = "resource to get user data", description = "resource to get user data by authentication token ",
             security = @SecurityRequirement(name = "security"),
