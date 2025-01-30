@@ -55,7 +55,6 @@ public class UserController {
     public ResponseEntity<UserResponseDto> createUser(@RequestBody @Valid UserCreateDto user) {
         User obj = user.toUser();
         userService.save(obj);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(UserResponseDto.toDto(obj));
     }
 

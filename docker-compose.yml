@@ -27,7 +27,6 @@ services:
     networks:
       - erudio-network
 
-
 networks:
   erudio-network:
     driver: bridge

@@ -58,6 +58,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Course course;
 
+    @OneToOne(mappedBy = "user")
+    private ForgotPassword forgotPassword;
+
     @JsonIgnore
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @ManyToMany(fetch = FetchType.EAGER)

@@ -194,4 +194,15 @@ public class ApiExceptionHandler {
                 .body(new ErrorMessage(request, HttpStatus.UNAUTHORIZED,ex.getMessage()));
 
     }
+
+    @ExceptionHandler(OtpExpiredException.class)
+    public ResponseEntity<ErrorMessage> OtpExpiredException(RuntimeException ex,
+                                                                   HttpServletRequest request){
+        log.error("Api Error", ex);
+
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.EXPECTATION_FAILED,ex.getMessage()));
+
+    }
 }

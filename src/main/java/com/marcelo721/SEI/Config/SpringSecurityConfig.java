@@ -46,8 +46,7 @@ public class SpringSecurityConfig {
                                 requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll().
                                 requestMatchers(HttpMethod.POST, "/api/v1/login").permitAll().
                                 requestMatchers(HttpMethod.GET, "/api/v1/users/verify").permitAll().
-                                requestMatchers(HttpMethod.POST, "/api/v1/public/forgot-password").permitAll().
-                                requestMatchers(HttpMethod.POST, "/api/v1/public/change-password").permitAll().
+                                requestMatchers(HttpMethod.POST, "/api/v1/forgot-password/**").permitAll().
                                 requestMatchers(DOCUMENTATION_OPENAPI).permitAll().anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -62,6 +61,6 @@ public class SpringSecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return  authenticationConfiguration.getAuthenticationManager();
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
