@@ -52,10 +52,10 @@ public class UserController {
             }
     )
     @PostMapping
-    public ResponseEntity<UserResponseDto> createUser(@RequestBody @Valid UserCreateDto user) {
+    public ResponseEntity<Void> createUser(@RequestBody @Valid UserCreateDto user) {
         User obj = user.toUser();
         userService.save(obj);
-        return ResponseEntity.status(HttpStatus.CREATED).body(UserResponseDto.toDto(obj));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(
