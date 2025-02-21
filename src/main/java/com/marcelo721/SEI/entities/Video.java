@@ -17,7 +17,7 @@ public class Video {
     @Column(unique = true, nullable = false, name = "id")
     private Long id;
 
-    @Column(nullable = false, name = "url_video", unique = true)
+    @Column(nullable = false, name = "url_video")
     private String url;
 
     @ManyToOne()

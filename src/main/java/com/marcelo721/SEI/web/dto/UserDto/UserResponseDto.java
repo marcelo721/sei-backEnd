@@ -14,7 +14,7 @@ public record UserResponseDto(String name,
 
     public static UserResponseDto toDto(User user){
         return new UserResponseDto(user.getName(), user.getEmail(), user.getId(),
-                user.getStatusAccount().toString(),user.getCourse().toString());
+                user.getStatusAccount().toString(),user.getCourse() != null ? user.getCourse().toString() : "Curso não definido");
     }
 
     public static List<UserResponseDto> toListDto(List<User> users){

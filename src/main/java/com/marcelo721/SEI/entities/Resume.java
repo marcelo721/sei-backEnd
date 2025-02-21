@@ -18,7 +18,7 @@ public class Resume {
 
     private String title;
 
-    @Column(name = "text")
+    @Column(name = "text", length = 5000)
     @Lob
     private String text;
 

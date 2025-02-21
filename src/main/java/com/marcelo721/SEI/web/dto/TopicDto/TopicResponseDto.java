@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 public record TopicResponseDto(
-        String name , Long id, String subject, Resume resume, Set<Video> videos
+        String name , Long id, String subject, Resume resume, List<Video> videos
 ) {
 
     public static TopicResponseDto toDto(Topic topic){

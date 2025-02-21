@@ -1,13 +1,11 @@
 package com.marcelo721.SEI.Config;
 
 import com.marcelo721.SEI.entities.*;
-import com.marcelo721.SEI.entities.enums.Role;
 import com.marcelo721.SEI.entities.enums.Semester;
-import com.marcelo721.SEI.services.*;
+import com.marcelo721.SEI.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 
 @Configuration
@@ -15,258 +13,334 @@ import org.springframework.context.annotation.Profile;
 //@Profile("test")
 public class TestConfig implements CommandLineRunner {
 
-    private final UserService userService;
-    private final SubjectService subjectService;
-
+    private final SubjectRepository subjectRepository;
+    private final TopicRepository topicRepository;
+    private final ResumeRepository  resumeRepository;
+    private final VideoRepository videoRepository;
+    private final ExerciseRepository exerciseRepository;
     @Override
     public void run(String... args) throws Exception {
-        // Criando disciplina
-        Subject subject1 = new Subject();
-        subject1.setName("Arquitetura de Computadores");
-        subject1.setSemester(Semester.FIRST);// Semestre
 
-        PastExam pastExam1 = new PastExam();
-        pastExam1.setUrl("https://www.youtube.com/watch?v=video101");
-        pastExam1.setTitle("2022.1");
-        pastExam1.setSubject(subject1);
+        //disciplinas primeiro semestre
 
-        PastExam pastExam2 = new PastExam();
-        pastExam2.setUrl("https://www.SEFSEyoutube.com/watch?v=video1");
-        pastExam2.setTitle("2022.2");
-        pastExam2.setSubject(subject1);
+        //calculo 1
+        Subject calculoI = new Subject();
+        calculoI.setName("Cálculo I");
+        calculoI.setSemester(Semester.FIRST);
+        subjectRepository.save(calculoI);
 
-        subject1.getPastExams().add(pastExam1);
-        subject1.getPastExams().add(pastExam2);
+        //tópicos para calculo 1
+        Topic limites = new Topic();
+        limites.setName("Limites");
+        limites.setDescription("Noção intuitiva de limites");
+        limites.setSubject(calculoI);
+        topicRepository.save(limites);
 
-// Criando tópico
-        Topic topic1 = new Topic();
-        topic1.setName("Processadores e Arquitetura");
-        topic1.setDescription("Estudo dos principais componentes de um processador e sua arquitetura");
+        //resumo de limites
+        Resume resumolimites = new Resume();
+        resumolimites.setTitle("O que são limites ?");
+        resumolimites.setText("O limite é um dos conceitos mais fundamentais da matemática, especialmente no campo do cálculo. Ele descreve" +
+                " o comportamento de uma função ou sequência à medida que a variável independente se aproxima de um determinado valor." +
+                " Em muitos casos, o limite nos permite entender o que ocorre com uma função quando ela se aproxima de um ponto, " +
+                "mesmo quando não há um valor definido nesse ponto. Esse conceito é crucial para compreender a continuidade das funções," +
+                " bem como para a definição de derivadas e integrais.\n" +
+                "\n" +
+                "De maneira mais precisa, o limite nos ajuda a estudar o comportamento assintótico de uma" +
+                " função — como ela se comporta em direção a um valor específico, seja ele finito ou infinito. No caso das derivadas," +
+                " por exemplo, o limite é usado para calcular taxas de variação, que descrevem a inclinação de uma curva em um ponto específico." +
+                " Da mesma forma, o conceito de limite é essencial para a definição de integrais, permitindo calcular áreas sob curvas e somar infinitos " +
+                "valores em intervalos pequenos.\n" +
+                "\n" +
+                "Portanto, o limite não é apenas um valor que se alcança, mas uma ferramenta poderosa" +
+                " para a análise do comportamento de funções em uma escala infinitesimal, permitindo que problemas complexos" +
+                " sejam resolvidos de forma precisa e rigorosa.");
+        resumolimites.setTopic(limites);
+        resumeRepository.save(resumolimites);
 
-// Associando o tópico à disciplina
-        topic1.setSubject(subject1);  // Associa o tópico à disciplina
-        subject1.getTopics().add(topic1);  // Adiciona o tópico à lista de tópicos da disciplina
+        //criando lista de videos para o tópico limites
+        Video aulaLimites01 = new Video();
+        aulaLimites01.setUrl("https://www.youtube.com/watch?v=QdPTWhACIwY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=2");
+        aulaLimites01.setTopic(limites);
+        aulaLimites01.setTopic(limites);
+        videoRepository.save(aulaLimites01);
 
-// Adicionando vídeos ao tópico
-        Video video1_1 = new Video();
-        video1_1.setUrl("https://www.youtube.com/watch?v=QdPTWhACIwY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=2");
-        video1_1.setTopic(topic1);  // Associando o vídeo ao tópico
-        topic1.getVideos().add(video1_1);
+        Video aulaLimites02 = new Video();
+        aulaLimites02.setUrl("https://www.youtube.com/watch?v=voBexx2V7gw&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=3");
+        aulaLimites02.setTopic(limites);
+        videoRepository.save(aulaLimites02);
 
-        Video video1_2 = new Video();
-        video1_2.setUrl("https://www.youtube.com/watch?v=voBexx2V7gw&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=3");
-        video1_2.setTopic(topic1);  // Associando o vídeo ao tópico
-        topic1.getVideos().add(video1_2);
+        Video aulaLimites03 = new Video();
+        aulaLimites03.setUrl("https://www.youtube.com/watch?v=2wolMQImLpY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=4");
+        aulaLimites03.setTopic(limites);
+        videoRepository.save(aulaLimites03);
 
-// Adicionando exercícios ao tópico
-        Exercise exercise1_1 = new Exercise();
-        exercise1_1.setUrl("https://drive.google.com/drive/folders/exercise101");
-        exercise1_1.setTopic(topic1);  // Associando o exercício ao tópico
-        topic1.getExercises().add(exercise1_1);
+        Video aulaLimites04 = new Video();
+        aulaLimites04.setUrl("https://www.youtube.com/watch?v=s3j69Fd3GWM&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=5");
+        aulaLimites04.setTopic(limites);
+        videoRepository.save(aulaLimites04);
 
-        Exercise exercise1_2 = new Exercise();
-        exercise1_2.setUrl("https://drive.google.com/drive/folders/exercise102");
-        exercise1_2.setTopic(topic1);  // Associando o exercício ao tópico
-        topic1.getExercises().add(exercise1_2);
+        Video aulaLimites05 = new Video();
+        aulaLimites05.setUrl("https://www.youtube.com/watch?v=68EDBZwlSuA&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=6");
+        aulaLimites05.setTopic(limites);
+        videoRepository.save(aulaLimites05);
 
-// Criando resumo
-        Resume resume1 = new Resume();
-        resume1.setTitle("Resumo sobre Processadores e Arquitetura");
-        resume1.setText("Este resumo aborda os principais componentes de um processador e o funcionamento de uma arquitetura de computador.");
-        resume1.setTopic(topic1);  // Associando o resumo ao tópico
-        topic1.setResume(resume1);  // Adicionando o resumo ao tópico
+        Video aulaLimites06 = new Video();
+        aulaLimites06.setUrl("https://www.youtube.com/watch?v=HwHO_w6V_No&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=7");
+        aulaLimites06.setTopic(limites);
+        videoRepository.save(aulaLimites06);
 
-// Salvando no banco
-        subjectService.save(subject1);
+        Video aulaLimites07 = new Video();
+        aulaLimites07.setUrl("https://www.youtube.com/watch?v=ChB77_9RJOM&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=8");
+        aulaLimites07.setTopic(limites);
+        videoRepository.save(aulaLimites07);
 
-        // Criando disciplina
-        Subject subject2 = new Subject();
-        subject2.setName("Sistemas Operacionais");
-        subject2.setSemester(Semester.SECOND);  // Semestre II
+        Video aulaLimites08 = new Video();
+        aulaLimites08.setUrl("https://www.youtube.com/watch?v=8uWVkjgzB7A&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=9");
+        aulaLimites08.setTopic(limites);
+        videoRepository.save(aulaLimites08);
 
-        PastExam pastExam3 = new PastExam();
-        pastExam3.setUrl("https://www.youtube.comtch?v=video101");
-        pastExam3.setTitle("2022.1");
-        pastExam3.setSubject(subject2);
+        Video aulaLimites09 = new Video();
+        aulaLimites09.setUrl("https://www.youtube.com/watch?v=nX6XtwX5dV4&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=10");
+        aulaLimites09.setTopic(limites);
+        videoRepository.save(aulaLimites09);
 
-        PastExam pastExam4 = new PastExam();
-        pastExam4.setUrl("https://www.youtube.com/watch?v=vide");
-        pastExam4.setTitle("2022.2");
-        pastExam4.setSubject(subject2);
+        Video aulaLimites10 = new Video();
+        aulaLimites10.setUrl("https://www.youtube.com/watch?v=8uWVkjgzB7A&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=11");
+        aulaLimites10.setTopic(limites);
+        videoRepository.save(aulaLimites10);
 
-        subject2.getPastExams().add(pastExam3);
-        subject2.getPastExams().add(pastExam4);
+        Video aulaLimites11 = new Video();
+        aulaLimites11.setUrl("https://www.youtube.com/watch?v=8uWVkjgzB7A&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=12");
+        aulaLimites11.setTopic(limites);
+        videoRepository.save(aulaLimites11);
 
-// Criando tópico
-        Topic topic2 = new Topic();
-        topic2.setName("Processos e Escalonamento");
-        topic2.setDescription("Estudo dos processos no sistema operacional e técnicas de escalonamento");
+        Video aulaLimites12 = new Video();
+        aulaLimites12.setUrl("https://www.youtube.com/watch?v=8uWVkjgzB7A&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=13");
+        aulaLimites12.setTopic(limites);
+        videoRepository.save(aulaLimites12);
 
-// Associando o tópico à disciplina
-        topic2.setSubject(subject2);  // Associa o tópico à disciplina
-        subject2.getTopics().add(topic2);  // Adiciona o tópico à lista de tópicos da disciplina
+        Exercise limitesExercise01 = new Exercise();
+        limitesExercise01.setUrl("");
+        limitesExercise01.setTopic(limites);
 
-// Adicionando vídeos ao tópico
-        Video video2_1 = new Video();
-        video2_1.setUrl("https://www.youtube.com/watch?v=2wolMQImLpY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=4");
-        video2_1.setTopic(topic2);  // Associando o vídeo ao tópico
-        topic2.getVideos().add(video2_1);
+        Exercise limitesExercise02 = new Exercise();
+        limitesExercise02.setUrl("");
+        limitesExercise02.setTopic(limites);
 
-        Video video2_2 = new Video();
-        video2_2.setUrl("https://www.youtube.com/watch?v=s3j69Fd3GWM&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=5");
-        video2_2.setTopic(topic2);  // Associando o vídeo ao tópico
-        topic2.getVideos().add(video2_2);
+        Exercise limitesExercise03 = new Exercise();
+        limitesExercise03.setUrl("");
+        limitesExercise03.setTopic(limites);
 
-// Adicionando exercícios ao tópico
-        Exercise exercise2_1 = new Exercise();
-        exercise2_1.setUrl("https://drive.google.com/drive/folders/exercise201");
-        exercise2_1.setTopic(topic2);  // Associando o exercício ao tópico
-        topic2.getExercises().add(exercise2_1);
+        Exercise limitesExercise04 = new Exercise();
+        limitesExercise04.setUrl("");
+        limitesExercise04.setTopic(limites);
 
-        Exercise exercise2_2 = new Exercise();
-        exercise2_2.setUrl("https://drive.google.com/drive/folders/exercise202");
-        exercise2_2.setTopic(topic2);  // Associando o exercício ao tópico
-        topic2.getExercises().add(exercise2_2);
+        Exercise limitesExercise05 = new Exercise();
+        limitesExercise05.setUrl("");
+        limitesExercise05.setTopic(limites);
 
-// Criando resumo
-        Resume resume2 = new Resume();
-        resume2.setTitle("Resumo sobre Processos e Escalonamento");
-        resume2.setText("Este resumo aborda o gerenciamento de processos e as estratégias de escalonamento em sistemas operacionais.");
-        resume2.setTopic(topic2);  // Associando o resumo ao tópico
-        topic2.setResume(resume2);  // Adicionando o resumo ao tópico
+        Topic funcoesContinuas = new Topic();
+        funcoesContinuas.setName("Funções contínuas ");
+        funcoesContinuas.setDescription("Nesse tópico, Serão abordados os conceitos e as propriedades das funções contínuas, " +
+                "explorando como elas se comportam em diferentes intervalos" +
+                " e como a continuidade influencia o comportamento das funções em cálculos e teoremas importantes");
+        funcoesContinuas.setSubject(calculoI);
+        topicRepository.save(funcoesContinuas);
 
-// Salvando no banco
-        subjectService.save(subject2);
+        Resume resumeFuncoesContinuas = new Resume();
+        resumeFuncoesContinuas.setTitle("Breve resumo sobre funções contínuas");
+        resumeFuncoesContinuas.setText("Uma função contínua é uma função matemática em que pequenas variações nas entradas causam pequenas variações " +
+                "nas saídas. Em outras palavras, a função não apresenta saltos ou descontinuidades. Para que uma função seja contínua, " +
+                "ela deve estar bem definida em todo o seu domínio, e o valor da função em qualquer ponto deve ser igual ao limite da função à medida" +
+                " que se aproxima desse ponto. Isso implica que, para qualquer ponto dentro de seu domínio, a função deve ser capaz de ser desenhada s" +
+                "em levantar o lápis do papel.");
+        resumeFuncoesContinuas.setTopic(funcoesContinuas);
+        resumeRepository.save(resumeFuncoesContinuas);
 
-        // Criando disciplina
-        Subject subject3 = new Subject();
-        subject3.setName("Redes de Computadores");
-        subject3.setSemester(Semester.THIRD);  // Semestre III
+        Video aulafuncoesContinuas01 = new Video();
+        aulafuncoesContinuas01.setUrl("https://www.youtube.com/watch?v=PW_Y2pvJg4s&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=14");
+        aulafuncoesContinuas01.setTopic(funcoesContinuas);
+        videoRepository.save(aulafuncoesContinuas01);
 
-        PastExam pastExam5 = new PastExam();
-        pastExam5.setUrl("hps://www.youtube.356563635653comtch?v=video101");
-        pastExam5.setTitle("2022.1");
-        pastExam5.setSubject(subject3);
+        Video aulafuncoesContinuas02 = new Video();
+        aulafuncoesContinuas02.setUrl("https://www.youtube.com/watch?v=PW_Y2pvJg4s&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=15");
+        aulafuncoesContinuas02.setTopic(funcoesContinuas);
+        videoRepository.save(aulafuncoesContinuas02);
 
-        PastExam pastExam6 = new PastExam();
-        pastExam6.setUrl("https://www.6356356356356536?v=vide");
-        pastExam6.setTitle("2022.2");
-        pastExam6.setSubject(subject3);
 
-        subject3.getPastExams().add(pastExam5);
-        subject3.getPastExams().add(pastExam6);
+        Video aulafuncoesContinuas03 = new Video();
+        aulafuncoesContinuas03.setUrl("https://www.youtube.com/watch?v=PW_Y2pvJg4s&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=16");
+        aulafuncoesContinuas03.setTopic(funcoesContinuas);
+        videoRepository.save(aulafuncoesContinuas03);
 
-// Criando tópico
-        Topic topic3 = new Topic();
-        topic3.setName("Modelo OSI e TCP/IP");
-        topic3.setDescription("Estudo dos modelos de referência OSI e TCP/IP e sua aplicação em redes");
 
-// Associando o tópico à disciplina
-        topic3.setSubject(subject3);  // Associa o tópico à disciplina
-        subject3.getTopics().add(topic3);  // Adiciona o tópico à lista de tópicos da disciplina
+        Video aulafuncoesContinuas04 = new Video();
+        aulafuncoesContinuas04.setUrl("https://www.youtube.com/watch?v=y2NeuWYexLc&list=PLe82WKsecrpxRkX578EifI2QkAfhL0TEk");
+        aulafuncoesContinuas04.setTopic(funcoesContinuas);
+        videoRepository.save(aulafuncoesContinuas04);
 
-// Adicionando vídeos ao tópico
-        Video video3_1 = new Video();
-        video3_1.setUrl("https://www.youtube.com/watch?v=68EDBZwlSuA&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=6");
-        video3_1.setTopic(topic3);  // Associando o vídeo ao tópico
-        topic3.getVideos().add(video3_1);
 
-        Video video3_2 = new Video();
-        video3_2.setUrl("https://www.youtube.com/watch?v=HwHO_w6V_No&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=7");
-        video3_2.setTopic(topic3);  // Associando o vídeo ao tópico
-        topic3.getVideos().add(video3_2);
+        Video aulafuncoesContinuas05 = new Video();
+        aulafuncoesContinuas05.setUrl("https://www.youtube.com/watch?v=nB_359EriG4&list=PLe82WKsecrpxRkX578EifI2QkAfhL0TEk&index=2");
+        aulafuncoesContinuas05.setTopic(funcoesContinuas);
+        videoRepository.save(aulafuncoesContinuas05);
 
-// Adicionando exercícios ao tópico
-        Exercise exercise3_1 = new Exercise();
-        exercise3_1.setUrl("https://drive.google.com/drive/folders/exercise301");
-        exercise3_1.setTopic(topic3);  // Associando o exercício ao tópico
-        topic3.getExercises().add(exercise3_1);
 
-        Exercise exercise3_2 = new Exercise();
-        exercise3_2.setUrl("https://drive.google.com/drive/folders/exercise302");
-        exercise3_2.setTopic(topic3);  // Associando o exercício ao tópico
-        topic3.getExercises().add(exercise3_2);
+        Video aulafuncoesContinuas06 = new Video();
+        aulafuncoesContinuas06.setUrl("https://www.youtube.com/watch?v=iiOrtGZVqnk");
+        aulafuncoesContinuas06.setTopic(funcoesContinuas);
+        videoRepository.save(aulafuncoesContinuas06);
 
-// Criando resumo
-        Resume resume3 = new Resume();
-        resume3.setTitle("Resumo sobre Modelo OSI e TCP/IP");
-        resume3.setText("Este resumo detalha os principais conceitos do modelo OSI e TCP/IP usados para comunicação em redes.");
-        resume3.setTopic(topic3);  // Associando o resumo ao tópico
-        topic3.setResume(resume3);  // Adicionando o resumo ao tópico
+        Exercise funcoesContinuas_Exercise01 = new Exercise();
+        funcoesContinuas_Exercise01.setUrl("");
+        funcoesContinuas_Exercise01.setTopic(funcoesContinuas);
 
-// Salvando no banco
-        subjectService.save(subject3);
+        Exercise funcoesContinuas_Exercise02 = new Exercise();
+        funcoesContinuas_Exercise02.setUrl("");
+        funcoesContinuas_Exercise02.setTopic(funcoesContinuas);
 
-        // Criando disciplina
-        Subject subject4 = new Subject();
-        subject4.setName("Engenharia de Software");
-        subject4.setSemester(Semester.FOURTH);  // Semestre IV
+        Topic derivadas = new Topic();
+        derivadas.setName("Derivadas");
+        derivadas.setDescription("Neste tópico, serão abordados os conceitos e propriedades das derivadas," +
+                " explorando como elas descrevem a taxa de variação das funções. Serão discutidos os comportamentos das " +
+                "derivadas em diferentes " +
+                "intervalos e como a continuidade das funções influencia seu cálculo e os teoremas fundamentais relacionados.");
+        derivadas.setSubject(calculoI);
+        topicRepository.save(derivadas);
 
-        PastExam pastExam7 = new PastExam();
-        pastExam7.setUrl("hps://www.youtube.356comtch?v=video101");
-        pastExam7.setTitle("2022.1");
-        pastExam7.setSubject(subject4);
+        // Criando lista de vídeos para o tópico derivadas
+        Video aulaDerivadas01 = new Video();
+        aulaDerivadas01.setUrl("https://www.youtube.com/watch?v=cWBEMN75IMc&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=17");
+        aulaDerivadas01.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas01);
 
-        PastExam pastExam8 = new PastExam();
-        pastExam8.setUrl("https://www.5565363?v=vide");
-        pastExam8.setTitle("2022.2");
-        pastExam8.setSubject(subject4);
+        Video aulaDerivadas02 = new Video();
+        aulaDerivadas02.setUrl("https://www.youtube.com/watch?v=cWBEMN75IMc&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=18");
+        aulaDerivadas02.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas02);
 
-        subject4.getPastExams().add(pastExam7);
-        subject4.getPastExams().add(pastExam8);
+        Video aulaDerivadas03 = new Video();
+        aulaDerivadas03.setUrl("https://www.youtube.com/watch?v=cWBEMN75IMc&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=19");
+        aulaDerivadas03.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas03);
 
-// Criando tópico
-        Topic topic4 = new Topic();
-        topic4.setName("Ciclo de Vida de Software");
-        topic4.setDescription("Estudo do ciclo de vida de desenvolvimento de software, incluindo modelos e práticas");
+        Video aulaDerivadas04 = new Video();
+        aulaDerivadas04.setUrl("https://www.youtube.com/watch?v=cWBEMN75IMc&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=20");
+        aulaDerivadas04.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas04);
 
-// Associando o tópico à disciplina
-        topic4.setSubject(subject4);  // Associa o tópico à disciplina
-        subject4.getTopics().add(topic4);  // Adiciona o tópico à lista de tópicos da disciplina
+        Video aulaDerivadas05 = new Video();
+        aulaDerivadas05.setUrl("https://www.youtube.com/watch?v=cWBEMN75IMc&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=21");
+        aulaDerivadas05.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas05);
 
-// Adicionando vídeos ao tópico
-        Video video4_1 = new Video();
-        video4_1.setUrl("https://www.youtube.com/watch?v=ChB77_9RJOM&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=8");
-        video4_1.setTopic(topic4);  // Associando o vídeo ao tópico
-        topic4.getVideos().add(video4_1);
+        Video aulaDerivadas06 = new Video();
+        aulaDerivadas06.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=23");
+        aulaDerivadas06.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas06);
 
-        Video video4_2 = new Video();
-        video4_2.setUrl("https://www.youtube.com/watch?v=8uWVkjgzB7A&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=9");
-        video4_2.setTopic(topic4);  // Associando o vídeo ao tópico
-        topic4.getVideos().add(video4_2);
+        Video aulaDerivadas07 = new Video();
+        aulaDerivadas07.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=25");
+        aulaDerivadas07.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas07);
 
-// Adicionando exercícios ao tópico
-        Exercise exercise4_1 = new Exercise();
-        exercise4_1.setUrl("https://drive.google.com/drive/folders/exercise401");
-        exercise4_1.setTopic(topic4);  // Associando o exercício ao tópico
-        topic4.getExercises().add(exercise4_1);
+        Video aulaDerivadas08 = new Video();
+        aulaDerivadas08.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=23");
+        aulaDerivadas08.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas08);
 
-        Exercise exercise4_2 = new Exercise();
-        exercise4_2.setUrl("https://drive.google.com/drive/folders/exercise402");
-        exercise4_2.setTopic(topic4);  // Associando o exercício ao tópico
-        topic4.getExercises().add(exercise4_2);
+        Video aulaDerivadas09 = new Video();
+        aulaDerivadas09.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=25");
+        aulaDerivadas09.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas09);
 
-// Criando resumo
-        Resume resume4 = new Resume();
-        resume4.setTitle("Resumo sobre Ciclo de Vida de Software");
-        resume4.setText("Este resumo aborda as principais fases do ciclo de vida de software e os modelos de desenvolvimento usados.");
-        resume4.setTopic(topic4);  // Associando o resumo ao tópico
-        topic4.setResume(resume4);  // Adicionando o resumo ao tópico
+        Video aulaDerivadas10 = new Video();
+        aulaDerivadas10.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=26");
+        aulaDerivadas10.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas10);
 
-// Salvando no banco
-        subjectService.save(subject4);
+        Video aulaDerivadas11 = new Video();
+        aulaDerivadas11.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=27");
+        aulaDerivadas11.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas11);
 
-        User user = new User();
-        user.setEmail("marcelo@alu.ufc.br");
-        user.setPassword("123456");
-        user.setRole(Role.ADMIN);
-        user.setName("marcelinho");
+        Video aulaDerivadas12 = new Video();
+        aulaDerivadas12.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=28");
+        aulaDerivadas12.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas12);
 
-        user.getSubjects().add(subject1);
-        user.getSubjects().add(subject2);
-        user.getSubjects().add(subject3);
-        user.getSubjects().add(subject4);
+        Video aulaDerivadas13 = new Video();
+        aulaDerivadas13.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=29");
+        aulaDerivadas13.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas13);
 
-        userService.save(user);
-    }
-}
+        Video aulaDerivadas14 = new Video();
+        aulaDerivadas14.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=30");
+        aulaDerivadas14.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas14);
+        Video aulaDerivadas15 = new Video();
+
+        aulaDerivadas15.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=31");
+        aulaDerivadas15.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas15);
+
+        Video aulaDerivadas16 = new Video();
+        aulaDerivadas16.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=32");
+        aulaDerivadas16.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas16);
+
+        Video aulaDerivadas17 = new Video();
+        aulaDerivadas17.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=33");
+        aulaDerivadas17.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas17);
+
+        Video aulaDerivadas18 = new Video();
+        aulaDerivadas18.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=34");
+        aulaDerivadas18.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas18);
+
+        Video aulaDerivadas19 = new Video();
+        aulaDerivadas19.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=35");
+        aulaDerivadas19.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas19);
+
+        Video aulaDerivadas20 = new Video();
+        aulaDerivadas20.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=36");
+        aulaDerivadas20.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas20);
+
+        Video aulaDerivadas21 = new Video();
+        aulaDerivadas21.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=37");
+        aulaDerivadas21.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas21);
+
+        Video aulaDerivadas22 = new Video();
+        aulaDerivadas22.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=38");
+        aulaDerivadas22.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas22);
+
+        Video aulaDerivadas23 = new Video();
+        aulaDerivadas23.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=39");
+        aulaDerivadas23.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas23);
+
+        Video aulaDerivadas24 = new Video();
+        aulaDerivadas24.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=40");
+        aulaDerivadas24.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas24);
+
+        Video aulaDerivadas25 = new Video();
+        aulaDerivadas25.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=41");
+        aulaDerivadas25.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas25);
+
+        Video aulaDerivadas26 = new Video();
+        aulaDerivadas26.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=42");
+        aulaDerivadas26.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas26);
+
+        Video aulaDerivadas27 = new Video();
+        aulaDerivadas27.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=43");
+        aulaDerivadas27.setTopic(derivadas);
+        videoRepository.save(aulaDerivadas27);
+    }}
