@@ -11,6 +11,7 @@ public record UserResponseDto(String name,
                               String StatusAccount,
                               String course) {
 
+
     public static UserResponseDto toDto(User user){
         return new UserResponseDto(user.getName(), user.getEmail(), user.getId(),
                 user.getStatusAccount().toString(),user.getCourse().toString());

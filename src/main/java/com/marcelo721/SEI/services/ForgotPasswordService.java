@@ -26,23 +26,36 @@ public class ForgotPasswordService {
     private final EmailResetPasswordService emailResetPasswordService;
 
 
-    @Transactional()
+    @Transactional
     public void verifyEmail(String email) {
         User userEntity = userService.findByEmail(email);
 
-        //generating OTP
+        // generating OTP
         Integer otp = generateOTP();
+
+        // Create an HTML-formatted email body
+        String htmlContent = "<html><body>"
+                + "<h2>Password Reset Request</h2>"
+                + "<p>Hello,</p>"
+                + "<p>You requested to reset your password. Please use the following OTP to reset your password:</p>"
+                + "<h3 style='color: blue;'>" + otp + "</h3>"
+                + "<p>This OTP will expire in 1 minute.</p>"
+                + "<p>If you did not request this, please ignore this email.</p>"
+                + "<p>Best regards,</p>"
+                + "<p>Your support team</p>"
+                + "</body></html>";
 
         MailBody mailBody = MailBody.builder()
                 .to(email)
-                .text("this is the opt")
-                .subject("OTP forgot password request" + otp)
+                .text(htmlContent)  // Sending HTML content in the email body
+                .subject("OTP Forgot Password Request")
                 .build();
 
         ForgotPassword forgotPassword = ForgotPassword.builder()
                 .otp(otp)
-                .expireDate(new Date(System.currentTimeMillis() + 70 * 1000))
-                .user(userEntity).build();
+                .expireDate(new Date(System.currentTimeMillis() + 70 * 1000))  // OTP expiration time
+                .user(userEntity)
+                .build();
 
         emailResetPasswordService.sendMail(mailBody);
         forgotPasswordRepository.save(forgotPassword);
