@@ -1,8 +1,12 @@
 package com.marcelo721.SEI.Config;
 
 import com.marcelo721.SEI.entities.*;
+import com.marcelo721.SEI.entities.enums.Course;
+import com.marcelo721.SEI.entities.enums.Role;
 import com.marcelo721.SEI.entities.enums.Semester;
+import com.marcelo721.SEI.entities.enums.StatusAccount;
 import com.marcelo721.SEI.repositories.*;
+import com.marcelo721.SEI.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +22,20 @@ public class TestConfig implements CommandLineRunner {
     private final ResumeRepository  resumeRepository;
     private final VideoRepository videoRepository;
     private final ExerciseRepository exerciseRepository;
+    private final UserService userService;
     @Override
     public void run(String... args) throws Exception {
+
+        //salvar usuario para teste
+        User user = new User();
+        user.setName("marcelinho22");
+        user.setEmail("marcelo@alu.ufc.br");
+        user.setPassword("m@rcelo222");
+        user.setStatusAccount(StatusAccount.ENABLED);
+        user.setCourse(Course.COMPUTER_ENGINEERING);
+        user.setRole(Role.STUDENT);
+        userService.save(user);
+
 
         //disciplinas primeiro semestre
 
