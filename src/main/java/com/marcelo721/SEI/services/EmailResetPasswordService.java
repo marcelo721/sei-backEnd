@@ -30,7 +30,7 @@ public class EmailResetPasswordService {
 
         try {
             helper.setTo(mailBody.to());
-            helper.setFrom("marceloh.sousa@alu.ufc.br");
+            helper.setFrom("mh0473569gmail.com");
             helper.setSubject(mailBody.subject());
             helper.setText(mailBody.text(), true); // 'true' enables HTML content
 

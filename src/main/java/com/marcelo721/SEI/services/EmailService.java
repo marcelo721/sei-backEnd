@@ -24,7 +24,7 @@ public class EmailService {
     @Async
     public void sendVerifyEmail(User user) throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
-        String fromAddress = "marceloh.sousa@alu.ufc.br";
+        String fromAddress = "marceloh.sousa023@gmail.com";
         String senderName = "Marcelo721";
         String subject = "please verify your registration";
         String content = EmailUtils.verificationCodeView();

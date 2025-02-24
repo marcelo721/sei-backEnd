@@ -17,5 +17,4 @@ public class UserUtils {
         }
         return stringBuilder.toString();
     }
-
 }

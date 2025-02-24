@@ -34,7 +34,7 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             String randomCode = UserUtils.generateRandomString(64);
             user.setVerificationCode(randomCode);
-            user.setStatusAccount(StatusAccount.ENABLED);
+            user.setStatusAccount(StatusAccount.DISABLED);
             emailService.sendVerifyEmail(user);
 
             return userRepository.save(user);
