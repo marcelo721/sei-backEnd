@@ -135,7 +135,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PatchMapping("/{userId}/subjects/{subjectId}")
+    @DeleteMapping("/{userId}/subjects/{subjectId}")
     @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #userId == authentication.principal.id)")
     public ResponseEntity<Void> removeSubject(@PathVariable Long userId, @PathVariable Long subjectId) {
         userService.removeSubject(userId, subjectId);
