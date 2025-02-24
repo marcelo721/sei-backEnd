@@ -20,7 +20,7 @@ public class Exercise {
     private Long id;
 
 
-    @Column(nullable = false, name = "exercise_url", unique = true)
+    @Column(name = "exercise_url")
     private String url;
 
     @ManyToOne()

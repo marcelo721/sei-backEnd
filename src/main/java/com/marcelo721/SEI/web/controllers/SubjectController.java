@@ -88,7 +88,7 @@ public class SubjectController {
             }
     )
     @GetMapping()
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<SubjectResponseDto>> getAll() {
         List<Subject> subjects = subjectService.findAll();
         return ResponseEntity.ok(SubjectResponseDto.toListDto(subjects));

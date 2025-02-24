@@ -33,7 +33,7 @@ public class TestConfig implements CommandLineRunner {
         user.setPassword("m@rcelo222");
         user.setStatusAccount(StatusAccount.ENABLED);
         user.setCourse(Course.COMPUTER_ENGINEERING);
-        user.setRole(Role.STUDENT);
+        user.setRole(Role.ADMIN);
         userService.save(user);
 
 
@@ -138,22 +138,27 @@ public class TestConfig implements CommandLineRunner {
         Exercise limitesExercise01 = new Exercise();
         limitesExercise01.setUrl("");
         limitesExercise01.setTopic(limites);
+        exerciseRepository.save(limitesExercise01);
 
         Exercise limitesExercise02 = new Exercise();
         limitesExercise02.setUrl("");
         limitesExercise02.setTopic(limites);
+        exerciseRepository.save(limitesExercise02);
 
         Exercise limitesExercise03 = new Exercise();
         limitesExercise03.setUrl("");
         limitesExercise03.setTopic(limites);
+        exerciseRepository.save(limitesExercise03);
 
         Exercise limitesExercise04 = new Exercise();
         limitesExercise04.setUrl("");
         limitesExercise04.setTopic(limites);
+        exerciseRepository.save(limitesExercise04);
 
         Exercise limitesExercise05 = new Exercise();
         limitesExercise05.setUrl("");
         limitesExercise05.setTopic(limites);
+        exerciseRepository.save(limitesExercise05);
 
         Topic funcoesContinuas = new Topic();
         funcoesContinuas.setName("Funções contínuas ");
@@ -210,10 +215,12 @@ public class TestConfig implements CommandLineRunner {
         Exercise funcoesContinuas_Exercise01 = new Exercise();
         funcoesContinuas_Exercise01.setUrl("");
         funcoesContinuas_Exercise01.setTopic(funcoesContinuas);
+        exerciseRepository.save(funcoesContinuas_Exercise01);
 
         Exercise funcoesContinuas_Exercise02 = new Exercise();
         funcoesContinuas_Exercise02.setUrl("");
         funcoesContinuas_Exercise02.setTopic(funcoesContinuas);
+        exerciseRepository.save(funcoesContinuas_Exercise02);
 
         Topic derivadas = new Topic();
         derivadas.setName("Derivadas");
@@ -359,4 +366,50 @@ public class TestConfig implements CommandLineRunner {
         aulaDerivadas27.setUrl("https://www.youtube.com/watch?v=91UN2cbzBGY&list=PLEfwqyY2ox86LhxKybOY3_IG-7R5herLC&index=43");
         aulaDerivadas27.setTopic(derivadas);
         videoRepository.save(aulaDerivadas27);
+
+        Exercise derivadasExcesice01 = new Exercise();
+        derivadasExcesice01.setUrl("");
+        derivadasExcesice01.setTopic(derivadas);
+        exerciseRepository.save(derivadasExcesice01);
+
+        Exercise derivadasExcesice02 = new Exercise();
+        derivadasExcesice02.setUrl("");
+        funcoesContinuas_Exercise02.setTopic(derivadas);
+        exerciseRepository.save(derivadasExcesice02);
+
+        Exercise derivadasExcesice03 = new Exercise();
+        derivadasExcesice03.setUrl("");
+        funcoesContinuas_Exercise02.setTopic(derivadas);
+        exerciseRepository.save(derivadasExcesice03);
+
+        Exercise derivadasExcesice04 = new Exercise();
+        derivadasExcesice04.setUrl("");
+        derivadasExcesice04.setTopic(derivadas);
+        exerciseRepository.save(derivadasExcesice04);
+
+        Exercise derivadasExcesice05 = new Exercise();
+        derivadasExcesice05.setUrl("");
+        derivadasExcesice05.setTopic(derivadas);
+        exerciseRepository.save(derivadasExcesice05);
+
+        Exercise derivadasExercise06 = new Exercise();
+        derivadasExcesice03.setUrl("");
+        derivadasExercise06.setTopic(derivadas);
+
+        Exercise derivadasExcesice07 = new Exercise();
+        derivadasExcesice07.setUrl("");
+        derivadasExcesice07.setTopic(derivadas);
+        exerciseRepository.save(derivadasExcesice07);
+
+        Exercise derivadasExercise08 = new Exercise();
+        derivadasExcesice03.setUrl("");
+        derivadasExercise06.setTopic(derivadas);
+        exerciseRepository.save(derivadasExercise06);
+
+        Exercise derivadasExercise09 = new Exercise();
+        derivadasExcesice03.setUrl("");
+        derivadasExercise06.setTopic(derivadas);
+        exerciseRepository.save(derivadasExercise09);
+
+
     }}
