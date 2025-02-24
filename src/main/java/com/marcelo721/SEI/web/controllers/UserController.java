@@ -129,7 +129,7 @@ public class UserController {
             }
     )
     @PostMapping("/{userId}/subjects/{subjectId}")
-    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #id == authentication.principal.id)")
+    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #userId == authentication.principal.id)")
     public ResponseEntity<User> addSubject(@PathVariable Long userId, @PathVariable Long subjectId) {
         User student = userService.addSubject(userId, subjectId);
         return ResponseEntity.ok(student);

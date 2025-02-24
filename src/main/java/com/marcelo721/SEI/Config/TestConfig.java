@@ -33,7 +33,7 @@ public class TestConfig implements CommandLineRunner {
         user.setPassword("m@rcelo222");
         user.setStatusAccount(StatusAccount.ENABLED);
         user.setCourse(Course.COMPUTER_ENGINEERING);
-        user.setRole(Role.ADMIN);
+        user.setRole(Role.STUDENT);
         userService.save(user);
 
 
