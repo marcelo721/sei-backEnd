@@ -130,10 +130,18 @@ public class UserController {
     )
     @PostMapping("/{userId}/subjects/{subjectId}")
     @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #userId == authentication.principal.id)")
-    public ResponseEntity<User> addSubject(@PathVariable Long userId, @PathVariable Long subjectId) {
+    public ResponseEntity<Void> addSubject(@PathVariable Long userId, @PathVariable Long subjectId) {
         User student = userService.addSubject(userId, subjectId);
-        return ResponseEntity.ok(student);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @PatchMapping("/{userId}/subjects/{subjectId}")
+    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #userId == authentication.principal.id)")
+    public ResponseEntity<Void> removeSubject(@PathVariable Long userId, @PathVariable Long subjectId) {
+        userService.removeSubject(userId, subjectId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 
     @Operation(
             summary = "update password", description = "resource to update password",

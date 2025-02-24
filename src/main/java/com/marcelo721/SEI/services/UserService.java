@@ -103,4 +103,12 @@ public class UserService {
             return StatusAccount.ENABLED ;
         }
     }
+
+    @Transactional
+    public void removeSubject(Long userId, Long subjectId) {
+        User user = findById(userId);
+        Subject subject = subjectService.findById(subjectId);
+        user.getSubjects().remove(subject);
+        userRepository.save(user);
+    }
 }
