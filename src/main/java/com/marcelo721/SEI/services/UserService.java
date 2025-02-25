@@ -34,16 +34,16 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             String randomCode = UserUtils.generateRandomString(64);
             user.setVerificationCode(randomCode);
-            user.setStatusAccount(StatusAccount.DISABLED);
-            emailService.sendVerifyEmail(user);
+            user.setStatusAccount(StatusAccount.ENABLED);
+            //emailService.sendVerifyEmail(user);
 
             return userRepository.save(user);
 
         }catch (DataIntegrityViolationException e){
             throw new EmailUniqueViolationException(String.format("Email {%s} already registered ", user.getEmail()));
-        } catch (MessagingException | UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        } //catch (MessagingException | UnsupportedEncodingException e) {
+            //throw new RuntimeException(e);
+        //}
     }
 
     @Transactional(readOnly = true)
