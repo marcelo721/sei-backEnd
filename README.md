@@ -199,3 +199,74 @@ As dependências são bibliotecas externas que o projeto utiliza para funcionar.
   - Permite empacotar a aplicação como um arquivo JAR executável.
 
 ---
+
+# Configuração do Swagger (SpringDoc OpenAPI)
+
+Este tópico descreve a configuração e utilização do Swagger (SpringDoc OpenAPI) no projeto SEI. O Swagger é uma ferramenta que facilita a documentação e teste de APIs RESTful, gerando automaticamente uma interface interativa para explorar os endpoints da API.
+
+---
+
+---
+
+## Configuração do Swagger no Projeto
+
+A configuração do Swagger foi feita na classe `SpringDocOpenApi`, localizada no pacote `com.marcelo721.SEI.Config`. Abaixo estão os detalhes dessa configuração:
+
+### 1. **Classe `SpringDocOpenApi`**
+- **Anotação `@Configuration`**:
+  - Indica que a classe contém configurações do Spring.
+- **Método `springShopOpenAPI()`**:
+  - Define as configurações globais do Swagger, como o título, descrição e versão da API.
+  - Configura o esquema de segurança para autenticação via JWT (JSON Web Token).
+
+#### Código da Classe:
+```java
+@Configuration
+public class SpringDocOpenApi {
+
+    @Bean
+    public OpenAPI springShopOpenAPI() {
+        return new OpenAPI()
+                .components(new Components().addSecuritySchemes("security", securityScheme()))
+                .info(new Info().title("SEI - API")
+                        .description("Sei API")
+                        .version("v0.0.1"));
+    }
+
+    private SecurityScheme securityScheme() {
+        return new SecurityScheme()
+                .description("Insert token to continue")
+                .type(SecurityScheme.Type.HTTP)
+                .in(SecurityScheme.In.HEADER)
+                .scheme("bearer")
+                .bearerFormat("JWT")
+                .name("security");
+    }
+}
+```
+
+
+
+## exemplo de uso do swagger em um endpoint de um controller 
+```java
+ @Operation(
+            summary = "create a new user", description = "resource to create a new user",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "resource created successfully",
+                            content = @Content(mediaType= "application/json", schema = @Schema(implementation = UserResponseDto.class))),
+
+                    @ApiResponse(responseCode = "409", description = "User email is already registered",
+                            content = @Content(mediaType= "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+
+                    @ApiResponse(responseCode = "422", description = "Invalid Data",
+                            content = @Content(mediaType= "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+
+            }
+    )
+    @PostMapping//tested
+    public ResponseEntity<Void> createUser(@RequestBody @Valid UserCreateDto user) {
+        User obj = user.toUser();
+        userService.save(obj);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+```
