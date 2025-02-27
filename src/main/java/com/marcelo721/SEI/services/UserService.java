@@ -85,6 +85,7 @@ public class UserService {
             throw  new PasswordInvalidException("The password is wrong");
         }
 
+
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
         return user;

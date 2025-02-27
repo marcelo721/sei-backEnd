@@ -45,11 +45,10 @@ public class VideoController {
             }
     )
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<VideoResponseDto> save(@RequestBody @Valid VideoCreateDto videoCreateDto){
-
-        Video saved = videoService.save(videoCreateDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(VideoResponseDto.toDto(saved));
+    @PreAuthorize("hasRole('ADMIN')")//tested
+    public ResponseEntity<Void> save(@RequestBody @Valid VideoCreateDto videoCreateDto){
+        videoService.save(videoCreateDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(
@@ -68,7 +67,7 @@ public class VideoController {
             }
     )
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")//tested
     public ResponseEntity<VideoResponseDto> getById(@PathVariable Long id){
         Video video = videoService.findById(id);
         return ResponseEntity.ok(VideoResponseDto.toDto(video));
@@ -89,10 +88,9 @@ public class VideoController {
             }
     )
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")//tested
     public ResponseEntity<List<VideoResponseDto>> getAll(){
         List<Video> all = videoService.findAll();
-
         return ResponseEntity.ok(VideoResponseDto.toDto(all));
     }
 }

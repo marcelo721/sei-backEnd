@@ -10,11 +10,12 @@ import com.marcelo721.SEI.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 
 @Configuration
 @RequiredArgsConstructor
-//@Profile("test")
+@Profile("test")
 public class TestConfig implements CommandLineRunner {
 
     private final SubjectRepository subjectRepository;
@@ -23,6 +24,8 @@ public class TestConfig implements CommandLineRunner {
     private final VideoRepository videoRepository;
     private final ExerciseRepository exerciseRepository;
     private final UserService userService;
+    private final UserRepository userRepository;
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -30,11 +33,19 @@ public class TestConfig implements CommandLineRunner {
         User user = new User();
         user.setName("marcelinho22");
         user.setEmail("marcelo@alu.ufc.br");
-        user.setPassword("m@rcelo222");
+        user.setPassword("M@rcelo222");
         user.setStatusAccount(StatusAccount.ENABLED);
         user.setCourse(Course.COMPUTER_ENGINEERING);
         user.setRole(Role.STUDENT);
-        userService.save(user);
+
+        User user2 = new User();
+        user2.setName("marcelinho221");
+        user2.setEmail("marcelin@alu.ufc.br");
+        user2.setPassword("M@rcelo222");
+        user2.setStatusAccount(StatusAccount.ENABLED);
+        user2.setCourse(Course.COMPUTER_ENGINEERING);
+        user2.setRole(Role.ADMIN);
+        userService.save(user2);
 
 
         //disciplinas primeiro semestre
@@ -491,6 +502,17 @@ public class TestConfig implements CommandLineRunner {
         Subject fisicaI = new Subject();
         fisicaI.setName("Física I");
         fisicaI.setSemester(Semester.FIRST);
+        fisicaI.getUsers().add(user);
         subjectRepository.save(fisicaI);
 
+        user.getSubjects().add(fisicaI);
+        userService.save(user);
+
+
+        //tópicos para calculo 1
+        Topic cinematica = new Topic();
+        cinematica.setName("Limites1");
+        cinematica.setDescription("Noção intuitiva de limites");
+        cinematica.setSubject(calculoI);
+        topicRepository.save(cinematica);
     }}

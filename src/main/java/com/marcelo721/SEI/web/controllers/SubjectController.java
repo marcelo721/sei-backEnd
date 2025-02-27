@@ -45,10 +45,10 @@ public class SubjectController {
             }
     )
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<SubjectResponseDto> save(@RequestBody @Valid SubjectCreateDto subject) {
-        Subject obj = subjectService.save(subject.toSubject());
-        return ResponseEntity.status(HttpStatus.CREATED).body(SubjectResponseDto.toDto(obj));
+    @PreAuthorize("hasRole('ADMIN')")//tested
+    public ResponseEntity<Void> save(@RequestBody @Valid SubjectCreateDto subject) {
+        subjectService.save(subject.toSubject());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(
@@ -67,7 +67,7 @@ public class SubjectController {
             }
     )
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")//tested
     public ResponseEntity<SubjectResponseDto> getSubjectById(@PathVariable Long id) {
         Subject obj = subjectService.findById(id);
         return ResponseEntity.ok(SubjectResponseDto.toDto(obj));
@@ -88,7 +88,7 @@ public class SubjectController {
             }
     )
     @GetMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")//tested
     public ResponseEntity<List<SubjectResponseDto>> getAll() {
         List<Subject> subjects = subjectService.findAll();
         return ResponseEntity.ok(SubjectResponseDto.toListDto(subjects));
@@ -112,7 +112,7 @@ public class SubjectController {
             }
     )
     @GetMapping("/idUser/{id}")
-    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #id == authentication.principal.id)")
+    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #id == authentication.principal.id)")//tested
     public ResponseEntity<List<Subject>> findAllSubjectsByUserId(@PathVariable Long id) {
         List<Subject> subjects = subjectService.getSubjectsByUserId(id);
         return ResponseEntity.ok(subjects);

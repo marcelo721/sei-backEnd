@@ -69,6 +69,6 @@ public class AuthenticationController {
         } catch (AuthenticationException e){
             log.warn("Bad credentials");
         }
-        return ResponseEntity.badRequest().body(new ErrorMessage(request, HttpStatus.UNPROCESSABLE_ENTITY, "Invalid Credentials"));
+        return ResponseEntity.status(401).body(new ErrorMessage(request, HttpStatus.UNAUTHORIZED, "Invalid Credentials"));
     }
 }

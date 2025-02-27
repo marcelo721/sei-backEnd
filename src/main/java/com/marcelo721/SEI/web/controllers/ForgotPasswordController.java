@@ -28,10 +28,10 @@ public class ForgotPasswordController {
                     @ApiResponse(responseCode = "404", description = "User not found",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))}
     )
-    @PostMapping("/verifyMail/{email}")
+    @PostMapping("/verifyMail/{email}")//tested
     public ResponseEntity<String> verifyMail(@PathVariable String email) {
         forgotPasswordService.verifyEmail(email);
-        return ResponseEntity.ok("OTP verified");
+        return ResponseEntity.ok("OTP sent");
     }
 
     @Operation(
@@ -46,7 +46,7 @@ public class ForgotPasswordController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             }
     )
-    @PostMapping("/verifyOtp/{email}")
+    @PostMapping("/verifyOtp/{email}")//tested
     public ResponseEntity<String> verifyOTP(@RequestBody OtpDto otpDto, @PathVariable String email) {
         forgotPasswordService.verifyOTP(otpDto.OTP(), email);
         return ResponseEntity.ok("OTP verified");
@@ -67,9 +67,7 @@ public class ForgotPasswordController {
     )
     @PostMapping("/changePassword/{email}")
     public ResponseEntity<?> changePassword(@PathVariable String email, @RequestBody ResetPasswordDto resetPasswordDto) {
-
         forgotPasswordService.changePassword(email, resetPasswordDto);
         return ResponseEntity.ok("password has been changed");
     }
-
 }

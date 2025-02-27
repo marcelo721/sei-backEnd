@@ -43,11 +43,10 @@ public class PastExamController {
             }
     )
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PastExam> createPastExam(@RequestBody @Valid PastExamCreateDto pastExam) {
-        PastExam response = pastExamService.save(pastExam);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    @PreAuthorize("hasRole('ADMIN')")//tested
+    public ResponseEntity<Void> createPastExam(@RequestBody @Valid PastExamCreateDto pastExam) {
+        pastExamService.save(pastExam);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(
@@ -65,7 +64,7 @@ public class PastExamController {
             }
     )
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")//tested
     public ResponseEntity<List<PastExam>> getAllPastExams() {
         List<PastExam> response = pastExamService.findAll();
         return ResponseEntity.ok(response);
@@ -87,7 +86,7 @@ public class PastExamController {
             }
     )
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")//tested
     public ResponseEntity<PastExam> getPastExamById(@PathVariable Long id) {
         PastExam response = pastExamService.findById(id);
         return ResponseEntity.ok(response);

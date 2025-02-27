@@ -43,11 +43,10 @@ public class TopicController {
             }
     )
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<TopicResponseDto> save(@RequestBody @Valid TopicCreateDto topic) {
-        Topic savedTopic = topicService.save(topic);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(TopicResponseDto.toDto(savedTopic));
+    @PreAuthorize("hasRole('ADMIN')")//tested
+    public ResponseEntity<Void> save(@RequestBody @Valid TopicCreateDto topic) {
+        topicService.save(topic);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(
@@ -65,7 +64,7 @@ public class TopicController {
             }
     )
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")//tested
     public ResponseEntity<List<TopicResponseDto>> findAll() {
         List<Topic> topics = topicService.findAll();
         return ResponseEntity.ok(TopicResponseDto.toListDto(topics));
@@ -87,7 +86,7 @@ public class TopicController {
             }
     )
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")//tested
     public ResponseEntity<TopicResponseDto> findById(@PathVariable Long id) {
         Topic topic = topicService.findById(id);
         return ResponseEntity.ok(TopicResponseDto.toDto(topic));
@@ -111,7 +110,7 @@ public class TopicController {
     )
 
     @GetMapping("/subjectId/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")//tested
     public ResponseEntity<List<TopicResponseDto>> findBySubjectId(@PathVariable Long id) {
         List<Topic> topics = topicService.getTopicsBySubject(id);
         return ResponseEntity.ok(TopicResponseDto.toListDto(topics));

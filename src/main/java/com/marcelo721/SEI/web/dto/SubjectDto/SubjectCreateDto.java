@@ -4,7 +4,9 @@ import com.marcelo721.SEI.entities.Subject;
 import com.marcelo721.SEI.entities.enums.Semester;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
+@Builder
 public record SubjectCreateDto(
         @NotBlank
         String name,

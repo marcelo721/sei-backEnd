@@ -2,7 +2,9 @@ package com.marcelo721.SEI.web.dto.UserDto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 
+@Builder
 public record UpdatePasswordDto(
         @NotBlank
         @Pattern(

@@ -43,10 +43,10 @@ public class ResumeController {
             }
     )
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ResumeResponseDto> save(@RequestBody @Valid ResumeCreateDto resume) {
-        Resume saved = resumeService.save(resume);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ResumeResponseDto.toDto(saved));
+    @PreAuthorize("hasRole('ADMIN')")//tested
+    public ResponseEntity<Void> save(@RequestBody @Valid ResumeCreateDto resume) {
+        resumeService.save(resume);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(
@@ -64,7 +64,7 @@ public class ResumeController {
             }
     )
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")//tested
     public ResponseEntity<List<ResumeResponseDto>> findAll() {
         List<Resume> resumes = resumeService.findAll();
 
@@ -87,7 +87,7 @@ public class ResumeController {
             }
     )
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")//tested
     public ResponseEntity<ResumeResponseDto> findById(@PathVariable Long id) {
         Resume resume = resumeService.findById(id);
         return ResponseEntity.ok(ResumeResponseDto.toDto(resume));

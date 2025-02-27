@@ -22,6 +22,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +52,7 @@ public class UserController {
 
             }
     )
-    @PostMapping
+    @PostMapping//tested
     public ResponseEntity<Void> createUser(@RequestBody @Valid UserCreateDto user) {
         User obj = user.toUser();
         userService.save(obj);
@@ -78,7 +79,7 @@ public class UserController {
             }
     )
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #id == authentication.principal.id)")
+    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #id == authentication.principal.id)")//tested
     public ResponseEntity<UserResponseDto> findById(@PathVariable Long id) {
         User obj = userService.findById(id);
         return ResponseEntity.ok(UserResponseDto.toDto(obj));
@@ -102,7 +103,7 @@ public class UserController {
             }
     )
     @GetMapping()
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")//tested
     public ResponseEntity<List<UserResponseDto>> getAll() {
         List<User> users = userService.findAll();
         return ResponseEntity.ok(UserResponseDto.toListDto(users));
@@ -129,14 +130,34 @@ public class UserController {
             }
     )
     @PostMapping("/{userId}/subjects/{subjectId}")
-    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #userId == authentication.principal.id)")
+    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #userId == authentication.principal.id)")//tested
     public ResponseEntity<Void> addSubject(@PathVariable Long userId, @PathVariable Long subjectId) {
         User student = userService.addSubject(userId, subjectId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @Operation(
+            summary = "remove subject", description = "This feature will remove a  subject to the user's subject list.",
+            security = @SecurityRequirement(name = "security"),
+
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "subject removed",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
+
+                    @ApiResponse(responseCode = "404", description = "User not found or subject not found",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+
+                    @ApiResponse(responseCode = "403",
+                            description = "This user does not have permission to access this resource",
+                            content =  @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class))),
+
+                    @ApiResponse(responseCode = "401",
+                            description = "This user is not authenticated",
+                            content =  @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class)))
+            }
+    )
     @DeleteMapping("/{userId}/subjects/{subjectId}")
-    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #userId == authentication.principal.id)")
+    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #userId == authentication.principal.id)")//tested
     public ResponseEntity<Void> removeSubject(@PathVariable Long userId, @PathVariable Long subjectId) {
         userService.removeSubject(userId, subjectId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -166,7 +187,7 @@ public class UserController {
             }
     )
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #id == authentication.principal.id)")
+    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #id == authentication.principal.id)")//tested
     public ResponseEntity<Void> updatePassword( @PathVariable Long id,  @Valid @RequestBody UpdatePasswordDto user){
 
         log.info("Updating password for user with id: {}", id);
@@ -202,7 +223,7 @@ public class UserController {
                             content =  @Content(mediaType = "application/json",schema = @Schema(implementation = ErrorMessage.class)))
             }
     )
-    @GetMapping("/me")
+    @GetMapping("/me")//tested
     public ResponseEntity<UserResponseDto> getUserData(@AuthenticationPrincipal UserDetails userDetails) {
         UserResponseDto user = UserResponseDto.toDto(userService.findByEmail(userDetails.getUsername()));
         return ResponseEntity.ok(user);

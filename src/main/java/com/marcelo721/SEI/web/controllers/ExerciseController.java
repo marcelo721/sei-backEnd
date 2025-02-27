@@ -45,10 +45,10 @@ public class ExerciseController {
             }
     )
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Exercise> save(@RequestBody @Valid ExerciseCreateDto exercise) {
-        Exercise saved = exerciseService.save(exercise);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    @PreAuthorize("hasRole('ADMIN')")//tested
+    public ResponseEntity<Void> save(@RequestBody @Valid ExerciseCreateDto exercise) {
+        exerciseService.save(exercise);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(
@@ -69,7 +69,7 @@ public class ExerciseController {
             }
     )
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")//tested
     public ResponseEntity<List<Exercise>> findAll() {
         List<Exercise> all = exerciseService.findAll();
         return ResponseEntity.ok(all);
@@ -96,7 +96,7 @@ public class ExerciseController {
             }
     )
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")//tested
     public ResponseEntity<Exercise> findById(@PathVariable Long id) {
         Exercise exercise = exerciseService.findById(id);
         return ResponseEntity.ok(exercise);
