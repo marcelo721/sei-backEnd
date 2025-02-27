@@ -116,3 +116,86 @@ O pacote `resources` contém os arquivos de configuração da aplicação, que s
 - **Exemplo de uso**:
   ```properties
   spring.profiles.active=prod
+
+
+## O que é o arquivo `pom.xml`?
+
+O `pom.xml` (Project Object Model) é o arquivo central de configuração do Maven. Ele contém informações sobre o projeto, suas dependências, plugins e outras configurações necessárias para compilar, testar e empacotar a aplicação.
+
+---
+
+## Estrutura do `pom.xml`
+
+### 1. **Informações Básicas do Projeto**
+- **groupId**: `com.marcelo721` - Identifica o grupo ou organização do projeto.
+- **artifactId**: `SEI` - Nome do projeto.
+- **version**: `0.0.1-SNAPSHOT` - Versão atual do projeto (em desenvolvimento).
+- **name**: `SEI` - Nome do projeto.
+- **description**: `SEI is an academic project to help students in computer engineering and electrical engineering.` - Descrição do projeto.
+
+### 2. **Configurações do Projeto**
+- **Java Version**: `17` - Versão do Java utilizada no projeto.
+- **Maven Compiler**: Configurado para usar a versão 21 do Java para compilação.
+
+### 3. **Dependências**
+As dependências são bibliotecas externas que o projeto utiliza para funcionar. Abaixo estão as principais dependências e suas funções:
+
+#### Dependências Principais
+- **Spring Boot Starter Data JPA** (`spring-boot-starter-data-jpa`):
+  - Fornece suporte para acesso a banco de dados usando JPA (Java Persistence API).
+  - Facilita a integração com bancos de dados relacionais.
+
+- **Spring Boot Starter Web** (`spring-boot-starter-web`):
+  - Fornece suporte para desenvolvimento de aplicações web com Spring MVC.
+  - Inclui dependências como Tomcat (servidor embutido) e Jackson (para manipulação de JSON).
+
+- **H2 Database** (`h2`):
+  - Banco de dados em memória, ideal para desenvolvimento e testes.
+  - Escopo `runtime`: Disponível apenas durante a execução do projeto.
+
+- **MySQL Connector Java** (`mysql-connector-java`):
+  - Driver JDBC para conexão com bancos de dados MySQL.
+  - Utilizado em ambientes de produção.
+
+- **Spring Boot Starter Mail** (`spring-boot-starter-mail`):
+  - Fornece suporte para envio de e-mails.
+
+- **Spring Boot Starter Test** (`spring-boot-starter-test`):
+  - Fornece ferramentas para testes unitários e de integração.
+  - Escopo `test`: Disponível apenas durante os testes.
+
+- **Lombok** (`lombok`):
+  - Biblioteca que simplifica a escrita de código Java, gerando automaticamente métodos como getters, setters, construtores, etc.
+  - Escopo `annotationProcessor`: Processa anotações durante a compilação.
+
+- **Java JWT** (`java-jwt`):
+  - Biblioteca para criação e validação de tokens JWT (JSON Web Tokens).
+  - Utilizada para autenticação e autorização.
+
+- **Spring Boot Starter Security** (`spring-boot-starter-security`):
+  - Fornece suporte para segurança em aplicações Spring Boot.
+  - Inclui autenticação, autorização e proteção contra ataques comuns.
+
+- **Spring Boot Starter Webflux** (`spring-boot-starter-webflux`):
+  - Fornece suporte para programação reativa com Spring WebFlux.
+  - Ideal para aplicações que exigem alta escalabilidade.
+
+- **Springdoc OpenAPI Starter WebMVC UI** (`springdoc-openapi-starter-webmvc-ui`):
+  - Gera documentação automática da API usando o padrão OpenAPI (Swagger).
+  - Facilita a visualização e teste dos endpoints da API.
+
+- **PostgreSQL** (`postgresql`):
+  - Driver JDBC para conexão com bancos de dados PostgreSQL.
+
+- **Spring Boot Starter Validation** (`spring-boot-starter-validation`):
+  - Fornece suporte para validação de dados em entidades e objetos.
+
+### 4. **Plugins**
+- **Maven Compiler Plugin**:
+  - Configura o compilador do Maven para usar a versão especificada do Java.
+
+- **Spring Boot Maven Plugin**:
+  - Facilita a construção e execução de aplicações Spring Boot.
+  - Permite empacotar a aplicação como um arquivo JAR executável.
+
+---
