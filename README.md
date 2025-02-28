@@ -437,3 +437,68 @@ Após executar o comando mvn clean test jacoco:report, o relatório será gerado
 ```bash
 target/site/jacoco/index.html
 ```
+
+# Como Executar o Projeto SEI
+
+Este guia explica como configurar e executar o projeto SEI em sua máquina local. Siga os passos abaixo para compilar e rodar a aplicação.
+
+---
+
+## Requisitos
+
+Antes de começar, certifique-se de que você possui os seguintes requisitos instalados:
+
+1. **Java 17 ou superior (LTS)**:
+   - O projeto foi desenvolvido usando Java 17. Certifique-se de que você tem uma versão compatível instalada.
+   - Para verificar a versão do Java, execute no terminal:
+     ```bash
+     java -version
+     ```
+   - Caso não tenha o Java instalado, baixe e instale a partir do [site oficial](https://www.oracle.com/java/technologies/javase-jdk17-downloads.html).
+
+2. **Maven (Opcional)**:
+   - O projeto inclui o wrapper do Maven (`mvnw`), que permite compilar e executar o projeto sem precisar instalar o Maven manualmente.
+   - Se preferir instalar o Maven, siga as instruções no [site oficial](https://maven.apache.org/install.html).
+
+---
+
+## Passo a Passo para Executar o Projeto
+
+### 1. **Clone o Repositório**
+   - Abra o terminal (de preferência, use o **Bash** no Linux/macOS ou o **Git Bash** no Windows).
+   - Navegue até a pasta onde deseja clonar o projeto e execute:
+     ```bash
+     git clone https://github.com/marcelo721/sei-backEnd
+     ```
+
+### 2. **Navegue até a Pasta do Projeto**
+   - Acesse a pasta do projeto clonado:
+     ```bash
+     cd SEI
+     ```
+
+### 3. **Compile o Projeto**
+   - Execute o seguinte comando para compilar o projeto e gerar o arquivo `.jar`:
+     ```bash
+     ./mvnw clean package
+     ```
+   - Esse comando faz o seguinte:
+     - **`clean`**: Limpa a pasta `target` (se existir).
+     - **`package`**: Compila o projeto e gera o arquivo `.jar` dentro da pasta `target`.
+
+### 4. **Execute a Aplicação**
+   - Após a compilação, execute o seguinte comando para iniciar a aplicação:
+     ```bash
+     java -jar target/SEI-0.0.1-SNAPSHOT.jar
+     ```
+   - Esse comando inicia o servidor Spring Boot embutido.
+
+### 5. **Acesse a Aplicação**
+   - A aplicação estará disponível no endereço:
+     ```
+     http://localhost:8080
+     ```
+   - Abra esse link no seu navegador para interagir com a aplicação.
+
+
+
