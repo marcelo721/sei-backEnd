@@ -469,6 +469,85 @@ spring.mail.username=${LOGIN}
 spring.mail.password=${PASSWORD}
 ```
 
+# ApiExceptionHandler
+
+## Descrição
+
+O `ApiExceptionHandler` é uma classe centralizada para o tratamento de exceções em uma aplicação Spring Boot. Ele atua como um `@RestControllerAdvice`, o que significa que ele intercepta exceções lançadas em qualquer controlador da aplicação e as trata de maneira consistente, retornando respostas HTTP apropriadas.
+
+## Por que foi usado?
+
+O uso do `ApiExceptionHandler` é crucial para garantir que todas as exceções sejam tratadas de forma uniforme e que o cliente receba mensagens de erro claras e úteis. Isso melhora a experiência do usuário e facilita a depuração de problemas. Além disso, centralizar o tratamento de exceções em um único local torna o código mais limpo e mais fácil de manter.
+
+## Funcionalidades
+
+- **Tratamento Centralizado de Exceções**: Captura exceções lançadas em qualquer controlador e as trata de maneira consistente.
+- **Respostas HTTP Padronizadas**: Retorna respostas HTTP com status codes apropriados e mensagens de erro detalhadas.
+- **Log de Erros**: Registra erros no log da aplicação para facilitar a depuração e monitoramento.
+- **Suporte a Diferentes Tipos de Exceções**: Trata uma variedade de exceções, incluindo validação de argumentos, violações de integridade de dados, erros de autenticação e mais.
+
+## Exemplos de Exceções Tratadas
+
+- **MethodArgumentNotValidException**: Trata erros de validação de argumentos em métodos de controladores.
+- **DataIntegrityViolationException**: Captura violações de integridade de dados, como tentativas de inserir valores duplicados em campos únicos.
+- **AccessDeniedException**: Lida com erros de acesso negado, retornando um status HTTP 403.
+- **NoSuchElementException**: Trata casos onde um elemento esperado não é encontrado, retornando um status HTTP 404.
+- **JWTCreationException**: Captura erros relacionados à criação de tokens JWT.
+
+## Estrutura da Resposta de Erro
+
+Todas as respostas de erro seguem uma estrutura padrão, encapsulada na classe `ErrorMessage`. Essa estrutura inclui:
+
+- **timestamp**: O momento em que o erro ocorreu.
+- **status**: O código de status HTTP.
+- **error**: A descrição do erro.
+- **message**: Uma mensagem detalhada sobre o erro.
+- **path**: O caminho da requisição que causou o erro.
+
+## Como Usar
+
+Para adicionar novas exceções ao `ApiExceptionHandler`, basta criar um novo método anotado com `@ExceptionHandler` e especificar o tipo de exceção que ele deve tratar. Por exemplo:
+
+```java
+@RestControllerAdvice
+@Slf4j
+public class ApiExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorMessage> methodArgumentNotValidException(MethodArgumentNotValidException ex,
+                                                                        HttpServletRequest request,
+                                                                        BindingResult result){
+
+        log.error("Api Error -", ex);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.UNPROCESSABLE_ENTITY, "Invalid Arguments", result));
+
+    }
+
+    @ExceptionHandler(EmailUniqueViolationException.class)
+    public ResponseEntity<ErrorMessage> emailUniqueViolationException(RuntimeException ex,
+                                                                      HttpServletRequest request){
+        log.error("Api Error", ex);
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.CONFLICT,ex.getMessage()));
+
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorMessage> entityNotFoundException(RuntimeException ex,
+                                                                HttpServletRequest request){
+        log.error("Api Error", ex);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.NOT_FOUND,ex.getMessage()));
+
+    }
+}
+```
 # Como Executar o Projeto SEI
 
 Este guia explica como configurar e executar o projeto SEI em sua máquina local. Siga os passos abaixo para compilar e rodar a aplicação.
