@@ -270,3 +270,170 @@ public class SpringDocOpenApi {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 ```
+
+# Testes
+
+Este tópico descreve a estratégia de testes adotada no projeto SEI, utilizando **JUnit** para testes unitários camada de serviço e testes integrados. Os testes foram desenvolvidos para garantir a qualidade do código, validar a lógica de negócio e garantir a integração correta entre os componentes.
+
+---
+
+## Estratégia de Testes
+
+### 1. **Testes Unitários**
+- **O que são?**
+  - Testes unitários focam em validar o comportamento de unidades individuais de código (como métodos ou classes) de forma isolada.
+  - São rápidos e não dependem de recursos externos (banco de dados, serviços, etc.).
+
+- **Onde foram aplicados?**
+  - Na camada de **serviço** (`Service`), onde a lógica de negócio do projeto é implementada.
+  - Exemplos: validação de regras de negócio, cálculos, transformações de dados, etc.
+
+- **Ferramentas utilizadas:**
+  - **JUnit 5**: Framework de testes para Java.
+  - **Mockito**: Biblioteca para criar mocks e simular comportamentos de dependências.
+
+---
+
+- **Exemplo de Teste unitário**:
+```java
+@ExtendWith(MockitoExtension.class)
+public class EmailServiceTest {
+
+    @Mock
+    private JavaMailSender mailSender; // Mock do JavaMailSender
+
+    @Mock
+    private MimeMessage mimeMessage; // Mock do MimeMessage
+
+    @InjectMocks
+    private EmailService emailService; // Injeta os mocks no EmailService
+
+    private User user;
+
+    @BeforeEach
+    public void setUp() {
+        // Configura um usuário de teste
+        user = new User();
+        user.setName("Marcelo");
+        user.setEmail("marcelo@example.com");
+        user.setVerificationCode("123456");
+    }
+
+    @Test
+    public void sendVerifyEmail_ShouldSendEmailSuccessfully() throws MessagingException, UnsupportedEncodingException {
+        // Configura o comportamento do mock do JavaMailSender
+        when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
+
+        // Chama o método a ser testado
+        emailService.sendVerifyEmail(user);
+
+        // Verifica se o método createMimeMessage foi chamado
+        verify(mailSender, times(1)).createMimeMessage();
+
+        // Verifica se o email foi enviado
+        verify(mailSender, times(1)).send(mimeMessage);
+    }
+
+}
+```
+
+### 2. **Testes Integrados**
+- **O que são?**
+  - Testes integrados validam a interação entre múltiplos componentes do sistema, como serviços, repositórios e controladores.
+  - Podem envolver recursos externos, como banco de dados.
+
+- **Ferramentas utilizadas:**
+  - **JUnit 5**: Framework de testes.
+  - **Spring Boot Test**: Suporte do Spring Boot para testes integrados.
+  - **H2 Database**: Banco de dados em memória para simular o ambiente de banco de dados em testes.
+
+---
+
+- **Exemplo de Teste Integrado**:
+```java
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+public class AuthenticationIT {
+
+    @Autowired
+    private WebTestClient testClient;
+
+    @Test
+    public void authenticationWithValidCredentials_returnStatus200(){
+
+        JwtToken responseBody = testClient
+                .post()
+                .uri("/api/v1/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UserLoginDto("marcelo@alu.ufc.br", "M@rcelo222"))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(JwtToken.class)
+                .returnResult().getResponseBody();
+
+        org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
+    }
+}
+```
+
+# JaCoCo - Cobertura de Código no Projeto SEI
+
+O **JaCoCo** é uma ferramenta de cobertura de código para projetos Java. Ele mede quantas linhas, métodos e classes do seu código foram exercitadas pelos testes, fornecendo relatórios detalhados que ajudam a identificar áreas não testadas.
+
+Este documento explica como o JaCoCo foi configurado no projeto SEI, como utilizá-lo e como interpretar seus relatórios.
+
+---
+
+## O que é o JaCoCo?
+
+O JaCoCo (Java Code Coverage) é uma biblioteca que analisa a cobertura de código em projetos Java. Ele funciona em conjunto com ferramentas de teste, como JUnit, para gerar relatórios que mostram:
+
+- **Cobertura de Linhas**: Quantas linhas de código foram executadas durante os testes.
+- **Cobertura de Métodos**: Quantos métodos foram chamados.
+- **Cobertura de Classes**: Quantas classes foram utilizadas.
+- **Cobertura de Branches**: Quantos caminhos de decisão (if/else, switch, etc.) foram percorridos.
+
+---
+
+## Configuração do JaCoCo no Projeto
+
+O JaCoCo foi configurado no projeto SEI usando o **Maven**. Abaixo estão os detalhes da configuração:
+
+### 1. **Adicionando o Plugin no `pom.xml`**
+O JaCoCo foi adicionado como um plugin no arquivo `pom.xml`:
+
+```xml
+<plugin>
+             <groupId>org.jacoco</groupId>
+             <artifactId>jacoco-maven-plugin</artifactId>
+             <version>0.8.8</version>
+             <executions>
+                 <execution>
+                     <goals>
+                         <goal>prepare-agent</goal>
+                     </goals>
+                 </execution>
+                 <execution>
+                     <id>report</id>
+                     <phase>verify</phase>
+                     <goals>
+                         <goal>report</goal>
+                     </goals>
+                 </execution>
+             </executions>
+</plugin>
+```
+
+## Executando o JaCoCo no SEI
+
+Para gerar o relatório de cobertura, execute o seguinte comando no terminal:
+```bash
+mvn clean test jacoco:report
+```
+Esse comando irá executar todos os testes do projeto e Gerar um relatório de cobertura na pasta **target/site/jacoco/index.html**
+
+## Gerando o relatório 
+Após executar o comando mvn clean test jacoco:report, o relatório será gerado e para acessá-lo digite o seguinte comando na pasta raiz do projeto:
+```bash
+target/site/jacoco/index.html
+```
