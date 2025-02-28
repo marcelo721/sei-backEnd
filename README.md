@@ -438,6 +438,37 @@ Após executar o comando mvn clean test jacoco:report, o relatório será gerado
 target/site/jacoco/index.html
 ```
 
+# Funcionalidade de Envio de E-mails
+
+Este tópico explica como a funcionalidade de envio de e-mails foi implementada no projeto SEI, utilizando a ferramenta de e-mail transacional **Brevo** (antigo Sendinblue).
+
+---
+
+## Ferramenta Utilizada: Brevo
+
+O **Brevo** é uma plataforma de e-mail transacional que permite enviar e-mails de forma confiável e escalável. Ele oferece APIs simples e documentação clara, facilitando a integração com aplicações Spring Boot.
+
+### Por que o Brevo?
+- **Facilidade de Integração**: APIs RESTful bem documentadas.
+- **Confiança**: Entregabilidade alta e suporte a templates de e-mail.
+- **Gratuito para Testes**: Oferece um plano gratuito com limite de 300 envios por di para desenvolvimento e testes.
+
+---
+
+## Implementação no Projeto
+
+### 1. **Configuração no `application.properties`**
+As credenciais e configurações do Brevo foram adicionadas no arquivo de configuração da aplicação:
+
+```properties
+#CONFIGURAÇÕES
+spring.mail.host=smtp-relay.brevo.com
+spring.mail.port=587
+#Credencias configuradas como variáveis de Ambiente
+spring.mail.username=${LOGIN}
+spring.mail.password=${PASSWORD}
+```
+
 # Como Executar o Projeto SEI
 
 Este guia explica como configurar e executar o projeto SEI em sua máquina local. Siga os passos abaixo para compilar e rodar a aplicação.
