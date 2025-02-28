@@ -10,12 +10,11 @@ import com.marcelo721.SEI.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 
 @Configuration
 @RequiredArgsConstructor
-@Profile("test")
+//@Profile("test")
 public class TestConfig implements CommandLineRunner {
 
     private final SubjectRepository subjectRepository;
