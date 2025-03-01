@@ -7,6 +7,69 @@ A API segue os princípios RESTful, garantindo uma arquitetura em camadas, de f�
 
 Este projeto foi desenvolvido com o intuito de simplificar o acesso dos alunos de engenharia aos recursos acadêmicos, centralizar informações importantes em uma única plataforma, facilitar a comunicação entre alunos, professores e administradores, etc. Ele é especialmente útil para alunos de engenharia que buscam uma plataforma integrada para estudos, professores que desejam gerenciar conteúdos e avaliações, "administradores universitários que precisam de uma solução centralizada para dados acadêmicos,mas futuramente, nossa ferramente irá abordar aspectos além dos cursos de engenharia para ser mais abrangente à toda universidade etc.].
 
+# Como Executar o Projeto SEI
+
+Este guia explica como configurar e executar o projeto SEI em sua máquina local. Siga os passos abaixo para compilar e rodar a aplicação.
+
+---
+
+## Requisitos
+
+Antes de começar, certifique-se de que você possui os seguintes requisitos instalados:
+
+1. **Java 17 ou superior (LTS)**:
+   - O projeto foi desenvolvido usando Java 17. Certifique-se de que você tem uma versão compatível instalada.
+   - Para verificar a versão do Java, execute no terminal:
+     ```bash
+     java -version
+     ```
+   - Caso não tenha o Java instalado, baixe e instale a partir do [site oficial](https://www.oracle.com/java/technologies/javase-jdk17-downloads.html).
+
+2. **Maven (Opcional)**:
+   - O projeto inclui o wrapper do Maven (`mvnw`), que permite compilar e executar o projeto sem precisar instalar o Maven manualmente.
+   - Se preferir instalar o Maven, siga as instruções no [site oficial](https://maven.apache.org/install.html).
+
+---
+
+## Passo a Passo para Executar o Projeto
+
+### 1. **Clone o Repositório**
+   - Abra o terminal (de preferência, use o **Bash** no Linux/macOS ou o **Git Bash** no Windows).
+   - Navegue até a pasta onde deseja clonar o projeto e execute:
+     ```bash
+     git clone https://github.com/marcelo721/sei-backEnd
+     ```
+
+### 2. **Navegue até a Pasta do Projeto**
+   - Acesse a pasta do projeto clonado:
+     ```bash
+     cd SEI
+     ```
+
+### 3. **Compile o Projeto**
+   - Execute o seguinte comando para compilar o projeto e gerar o arquivo `.jar`:
+     ```bash
+     ./mvnw clean package
+     ```
+   - Esse comando faz o seguinte:
+     - **`clean`**: Limpa a pasta `target` (se existir).
+     - **`package`**: Compila o projeto e gera o arquivo `.jar` dentro da pasta `target`.
+
+### 4. **Execute a Aplicação**
+   - Após a compilação, execute o seguinte comando para iniciar a aplicação:
+     ```bash
+     java -jar target/SEI-0.0.1-SNAPSHOT.jar
+     ```
+   - Esse comando inicia o servidor Spring Boot embutido.
+
+### 5. **Acesse a Aplicação**
+   - A aplicação estará disponível no endereço:
+     ```
+     http://localhost:8080
+     ```
+   - Abra esse link no seu navegador para interagir com a aplicação.
+
+
 ## Tecnologias Utilizadas
 
 - **Java**: Linguagem de programação principal.
@@ -269,4 +332,282 @@ public class SpringDocOpenApi {
         userService.save(obj);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+```
+
+# Testes
+
+Este tópico descreve a estratégia de testes adotada no projeto SEI, utilizando **JUnit** para testes unitários camada de serviço e testes integrados. Os testes foram desenvolvidos para garantir a qualidade do código, validar a lógica de negócio e garantir a integração correta entre os componentes.
+
+---
+
+## Estratégia de Testes
+
+### 1. **Testes Unitários**
+- **O que são?**
+  - Testes unitários focam em validar o comportamento de unidades individuais de código (como métodos ou classes) de forma isolada.
+  - São rápidos e não dependem de recursos externos (banco de dados, serviços, etc.).
+
+- **Onde foram aplicados?**
+  - Na camada de **serviço** (`Service`), onde a lógica de negócio do projeto é implementada.
+  - Exemplos: validação de regras de negócio, cálculos, transformações de dados, etc.
+
+- **Ferramentas utilizadas:**
+  - **JUnit 5**: Framework de testes para Java.
+  - **Mockito**: Biblioteca para criar mocks e simular comportamentos de dependências.
+
+---
+
+- **Exemplo de Teste unitário**:
+```java
+@ExtendWith(MockitoExtension.class)
+public class EmailServiceTest {
+
+    @Mock
+    private JavaMailSender mailSender; // Mock do JavaMailSender
+
+    @Mock
+    private MimeMessage mimeMessage; // Mock do MimeMessage
+
+    @InjectMocks
+    private EmailService emailService; // Injeta os mocks no EmailService
+
+    private User user;
+
+    @BeforeEach
+    public void setUp() {
+        // Configura um usuário de teste
+        user = new User();
+        user.setName("Marcelo");
+        user.setEmail("marcelo@example.com");
+        user.setVerificationCode("123456");
+    }
+
+    @Test
+    public void sendVerifyEmail_ShouldSendEmailSuccessfully() throws MessagingException, UnsupportedEncodingException {
+        // Configura o comportamento do mock do JavaMailSender
+        when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
+
+        // Chama o método a ser testado
+        emailService.sendVerifyEmail(user);
+
+        // Verifica se o método createMimeMessage foi chamado
+        verify(mailSender, times(1)).createMimeMessage();
+
+        // Verifica se o email foi enviado
+        verify(mailSender, times(1)).send(mimeMessage);
+    }
+
+}
+```
+
+### 2. **Testes Integrados**
+- **O que são?**
+  - Testes integrados validam a interação entre múltiplos componentes do sistema, como serviços, repositórios e controladores.
+  - Podem envolver recursos externos, como banco de dados.
+
+- **Ferramentas utilizadas:**
+  - **JUnit 5**: Framework de testes.
+  - **Spring Boot Test**: Suporte do Spring Boot para testes integrados.
+  - **H2 Database**: Banco de dados em memória para simular o ambiente de banco de dados em testes.
+
+---
+
+- **Exemplo de Teste Integrado**:
+```java
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+public class AuthenticationIT {
+
+    @Autowired
+    private WebTestClient testClient;
+
+    @Test
+    public void authenticationWithValidCredentials_returnStatus200(){
+
+        JwtToken responseBody = testClient
+                .post()
+                .uri("/api/v1/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UserLoginDto("marcelo@alu.ufc.br", "M@rcelo222"))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(JwtToken.class)
+                .returnResult().getResponseBody();
+
+        org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
+    }
+}
+```
+
+# JaCoCo - Cobertura de Código no Projeto SEI
+
+O **JaCoCo** é uma ferramenta de cobertura de código para projetos Java. Ele mede quantas linhas, métodos e classes do seu código foram exercitadas pelos testes, fornecendo relatórios detalhados que ajudam a identificar áreas não testadas.
+
+Este documento explica como o JaCoCo foi configurado no projeto SEI, como utilizá-lo e como interpretar seus relatórios.
+
+---
+
+## O que é o JaCoCo?
+
+O JaCoCo (Java Code Coverage) é uma biblioteca que analisa a cobertura de código em projetos Java. Ele funciona em conjunto com ferramentas de teste, como JUnit, para gerar relatórios que mostram:
+
+- **Cobertura de Linhas**: Quantas linhas de código foram executadas durante os testes.
+- **Cobertura de Métodos**: Quantos métodos foram chamados.
+- **Cobertura de Classes**: Quantas classes foram utilizadas.
+- **Cobertura de Branches**: Quantos caminhos de decisão (if/else, switch, etc.) foram percorridos.
+
+---
+
+## Configuração do JaCoCo no Projeto
+
+O JaCoCo foi configurado no projeto SEI usando o **Maven**. Abaixo estão os detalhes da configuração:
+
+### 1. **Adicionando o Plugin no `pom.xml`**
+O JaCoCo foi adicionado como um plugin no arquivo `pom.xml`:
+
+```xml
+<plugin>
+             <groupId>org.jacoco</groupId>
+             <artifactId>jacoco-maven-plugin</artifactId>
+             <version>0.8.8</version>
+             <executions>
+                 <execution>
+                     <goals>
+                         <goal>prepare-agent</goal>
+                     </goals>
+                 </execution>
+                 <execution>
+                     <id>report</id>
+                     <phase>verify</phase>
+                     <goals>
+                         <goal>report</goal>
+                     </goals>
+                 </execution>
+             </executions>
+</plugin>
+```
+
+## Executando o JaCoCo no SEI
+
+Para gerar o relatório de cobertura, execute o seguinte comando no terminal:
+```bash
+mvn clean test jacoco:report
+```
+Esse comando irá executar todos os testes do projeto e Gerar um relatório de cobertura na pasta **target/site/jacoco/index.html**
+
+## Gerando o relatório 
+Após executar o comando mvn clean test jacoco:report, o relatório será gerado e para acessá-lo digite o seguinte comando na pasta raiz do projeto:
+```bash
+target/site/jacoco/index.html
+```
+
+# Funcionalidade de Envio de E-mails
+
+Este tópico explica como a funcionalidade de envio de e-mails foi implementada no projeto SEI, utilizando a ferramenta de e-mail transacional **Brevo** (antigo Sendinblue).
+
+---
+
+## Ferramenta Utilizada: Brevo
+
+O **Brevo** é uma plataforma de e-mail transacional que permite enviar e-mails de forma confiável e escalável. Ele oferece APIs simples e documentação clara, facilitando a integração com aplicações Spring Boot.
+
+### Por que o Brevo?
+- **Facilidade de Integração**: APIs RESTful bem documentadas.
+- **Confiança**: Entregabilidade alta e suporte a templates de e-mail.
+- **Gratuito para Testes**: Oferece um plano gratuito com limite de 300 envios por di para desenvolvimento e testes.
+
+---
+
+## Implementação no Projeto
+
+### 1. **Configuração no `application.properties`**
+As credenciais e configurações do Brevo foram adicionadas no arquivo de configuração da aplicação:
+
+```properties
+#CONFIGURAÇÕES
+spring.mail.host=smtp-relay.brevo.com
+spring.mail.port=587
+#Credencias configuradas como variáveis de Ambiente
+spring.mail.username=${LOGIN}
+spring.mail.password=${PASSWORD}
+```
+
+# ApiExceptionHandler
+
+## Descrição
+
+O `ApiExceptionHandler` é uma classe centralizada para o tratamento de exceções em uma aplicação Spring Boot. Ele atua como um `@RestControllerAdvice`, o que significa que ele intercepta exceções lançadas em qualquer controlador da aplicação e as trata de maneira consistente, retornando respostas HTTP apropriadas.
+
+## Por que foi usado?
+
+O uso do `ApiExceptionHandler` é crucial para garantir que todas as exceções sejam tratadas de forma uniforme e que o cliente receba mensagens de erro claras e úteis. Isso melhora a experiência do usuário e facilita a depuração de problemas. Além disso, centralizar o tratamento de exceções em um único local torna o código mais limpo e mais fácil de manter.
+
+## Funcionalidades
+
+- **Tratamento Centralizado de Exceções**: Captura exceções lançadas em qualquer controlador e as trata de maneira consistente.
+- **Respostas HTTP Padronizadas**: Retorna respostas HTTP com status codes apropriados e mensagens de erro detalhadas.
+- **Log de Erros**: Registra erros no log da aplicação para facilitar a depuração e monitoramento.
+- **Suporte a Diferentes Tipos de Exceções**: Trata uma variedade de exceções, incluindo validação de argumentos, violações de integridade de dados, erros de autenticação e mais.
+
+## Exemplos de Exceções Tratadas
+
+- **MethodArgumentNotValidException**: Trata erros de validação de argumentos em métodos de controladores.
+- **DataIntegrityViolationException**: Captura violações de integridade de dados, como tentativas de inserir valores duplicados em campos únicos.
+- **AccessDeniedException**: Lida com erros de acesso negado, retornando um status HTTP 403.
+- **NoSuchElementException**: Trata casos onde um elemento esperado não é encontrado, retornando um status HTTP 404.
+- **JWTCreationException**: Captura erros relacionados à criação de tokens JWT.
+
+## Estrutura da Resposta de Erro
+
+Todas as respostas de erro seguem uma estrutura padrão, encapsulada na classe `ErrorMessage`. Essa estrutura inclui:
+
+- **timestamp**: O momento em que o erro ocorreu.
+- **status**: O código de status HTTP.
+- **error**: A descrição do erro.
+- **message**: Uma mensagem detalhada sobre o erro.
+- **path**: O caminho da requisição que causou o erro.
+
+## Como Usar
+
+Para adicionar novas exceções ao `ApiExceptionHandler`, basta criar um novo método anotado com `@ExceptionHandler` e especificar o tipo de exceção que ele deve tratar. Por exemplo:
+
+```java
+@RestControllerAdvice
+@Slf4j
+public class ApiExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorMessage> methodArgumentNotValidException(MethodArgumentNotValidException ex,
+                                                                        HttpServletRequest request,
+                                                                        BindingResult result){
+
+        log.error("Api Error -", ex);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.UNPROCESSABLE_ENTITY, "Invalid Arguments", result));
+
+    }
+
+    @ExceptionHandler(EmailUniqueViolationException.class)
+    public ResponseEntity<ErrorMessage> emailUniqueViolationException(RuntimeException ex,
+                                                                      HttpServletRequest request){
+        log.error("Api Error", ex);
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.CONFLICT,ex.getMessage()));
+
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorMessage> entityNotFoundException(RuntimeException ex,
+                                                                HttpServletRequest request){
+        log.error("Api Error", ex);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.NOT_FOUND,ex.getMessage()));
+
+    }
+}
 ```
