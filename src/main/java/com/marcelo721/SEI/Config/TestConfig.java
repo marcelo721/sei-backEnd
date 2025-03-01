@@ -10,11 +10,12 @@ import com.marcelo721.SEI.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 
 @Configuration
 @RequiredArgsConstructor
-//@Profile("test")
+@Profile("dev")
 public class TestConfig implements CommandLineRunner {
 
     private final SubjectRepository subjectRepository;
@@ -23,6 +24,7 @@ public class TestConfig implements CommandLineRunner {
     private final VideoRepository videoRepository;
     private final ExerciseRepository exerciseRepository;
     private final UserService userService;
+    private final PastExamRepository pastExamRepository;
     private final UserRepository userRepository;
 
     @Override
@@ -38,13 +40,15 @@ public class TestConfig implements CommandLineRunner {
         user.setRole(Role.STUDENT);
 
         User user2 = new User();
-        user2.setName("marcelinho221");
-        user2.setEmail("marcelin@alu.ufc.br");
-        user2.setPassword("M@rcelo222");
-        user2.setStatusAccount(StatusAccount.ENABLED);
+        user2.setName("professor");
+        user2.setEmail("professor@gmail.com");
+        user2.setPassword("S&nha2025");
         user2.setCourse(Course.COMPUTER_ENGINEERING);
-        user2.setRole(Role.ADMIN);
+        user2.setRole(Role.STUDENT);
         userService.save(user2);
+        user2 = userRepository.findByEmail("professor@gmail.com").get();
+        user2.setStatusAccount(StatusAccount.ENABLED);
+        userRepository.save(user2);
 
 
         //disciplinas primeiro semestre
@@ -61,6 +65,7 @@ public class TestConfig implements CommandLineRunner {
         limites.setDescription("Noção intuitiva de limites");
         limites.setSubject(calculoI);
         topicRepository.save(limites);
+
 
         //resumo de limites
         Resume resumolimites = new Resume();
@@ -170,6 +175,24 @@ public class TestConfig implements CommandLineRunner {
         limitesExercise05.setTopic(limites);
         exerciseRepository.save(limitesExercise05);
 
+        PastExam pastExam01 = new PastExam();
+        pastExam01.setUrl("https://drive.google.com/file/d/1M9e7oe3iETyMq2r0JYWZXDLD81UnXzS0/view?usp=drive_link");
+        pastExam01.setTitle("2023.1");
+        pastExam01.setSubject(calculoI);
+        pastExamRepository.save(pastExam01);
+
+        PastExam pastExam02 = new PastExam();
+        pastExam02.setUrl("https://drive.google.com/file/d/1xtMSLjHB9tkqXR_SCG3JlFw-2q1AFDBh/view?usp=drive_link");
+        pastExam02.setTitle("2023.2");
+        pastExam02.setSubject(calculoI);
+        pastExamRepository.save(pastExam02);
+
+        PastExam pastExam3 = new PastExam();
+        pastExam3.setUrl("https://drive.google.com/file/d/1o5z5PLauzNA-f3iKlsGacG8wt-IeEUFq/view?usp=drive_link");
+        pastExam3.setTitle("2024.1");
+        pastExam3.setSubject(calculoI);
+        pastExamRepository.save(pastExam3);
+
         Topic funcoesContinuas = new Topic();
         funcoesContinuas.setName("Funções contínuas ");
         funcoesContinuas.setDescription("Nesse tópico, Serão abordados os conceitos e as propriedades das funções contínuas, " +
@@ -197,9 +220,7 @@ public class TestConfig implements CommandLineRunner {
         aulafuncoesContinuas02.setUrl("https://www.youtube.com/watch?v=4L4E_N3EaJs");
         aulafuncoesContinuas02.setTopic(funcoesContinuas);
         videoRepository.save(aulafuncoesContinuas02);
-
-
-
+        
         Video aulafuncoesContinuas04 = new Video();
         aulafuncoesContinuas04.setUrl("https://www.youtube.com/watch?v=y2NeuWYexLc");
         aulafuncoesContinuas04.setTopic(funcoesContinuas);
@@ -514,4 +535,19 @@ public class TestConfig implements CommandLineRunner {
         cinematica.setDescription("Noção intuitiva de limites");
         cinematica.setSubject(calculoI);
         topicRepository.save(cinematica);
+
+        Subject subject1 = new Subject();
+        subject1.setName("Matematica Discreta");
+        subject1.setSemester(Semester.FIRST);
+        subjectRepository.save(subject1);
+
+        Subject subject2 = new Subject();
+        subject2.setName("Programação Computacional");
+        subject2.setSemester(Semester.FIRST);
+        subjectRepository.save(subject2);
+
+        Subject subject3 = new Subject();
+        subject3.setName("Introdução a Engenharia");
+        subject3.setSemester(Semester.FIRST);
+        subjectRepository.save(subject3);
     }}

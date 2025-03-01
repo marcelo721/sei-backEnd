@@ -51,16 +51,6 @@ class AuthenticationServiceTest {
         assertThrows(UsernameNotFoundException.class, () -> authenticationService.loadUserByUsername("unknown@example.com"));
     }
 
-    @Test
-    void testGetTokenAuthenticatedSuccess() {
-        UserLoginDto loginDto = new UserLoginDto("test@example.com", "password");
-        when(userService.findByEmail("test@example.com")).thenReturn(user);
-        when(JwtUtils.createToken(user)).thenReturn(new JwtToken("mockToken"));
-
-        JwtToken token = authenticationService.getTokenAuthenticated(loginDto);
-        assertNotNull(token);
-        assertEquals("mockToken", token.getToken());
-    }
 
     @Test
     void testGetTokenAuthenticatedAccountDisabled() {

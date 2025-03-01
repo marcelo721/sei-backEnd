@@ -31,7 +31,7 @@ public class ForgotPasswordIT {
 
         String response = testClient
                 .post()
-                .uri("/api/v1/forgot-password/verifyMail/marcelo@alu.ufc.br")
+                .uri("/api/v1/forgot-password/verifyMail/test@alu.ufc.br")
                 .contentType(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
@@ -46,7 +46,7 @@ public class ForgotPasswordIT {
     public void verifyMail_withInvalidMail_returns404() {
         ErrorMessage response = testClient
                 .post()
-                .uri("/api/v1/forgot-password/verifyMail/test@alu.ufc.br")
+                .uri("/api/v1/forgot-password/verifyMail/notfound@alu.ufc.br")
                 .contentType(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isNotFound()
@@ -60,14 +60,14 @@ public class ForgotPasswordIT {
     @Test
     public void verifyOtp_withValidOtp_returns200() {
 
-        forgotPasswordService.verifyEmail("marcelo@alu.ufc.br");
-        User user = userService.findByEmail("marcelo@alu.ufc.br");
+        forgotPasswordService.verifyEmail("marcelin@alu.ufc.br");
+        User user = userService.findByEmail("marcelin@alu.ufc.br");
 
         OtpDto otpDto = new OtpDto(user.getForgotPassword().getOtp());
 
         String response = testClient
                 .post()
-                .uri("/api/v1/forgot-password/verifyOtp/marcelo@alu.ufc.br")
+                .uri("/api/v1/forgot-password/verifyOtp/marcelin@alu.ufc.br")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(otpDto)
                 .exchange()
@@ -107,17 +107,17 @@ public class ForgotPasswordIT {
     @Test
     public void resetPassword_withValidPassword_returns200() {
 
-        forgotPasswordService.verifyEmail("marcelo@alu.ufc.br");
-        User user = userService.findByEmail("marcelo@alu.ufc.br");
+        forgotPasswordService.verifyEmail("marcelao@alu.ufc.br");
+        User user = userService.findByEmail("marcelao@alu.ufc.br");
 
         OtpDto otpDto = new OtpDto(user.getForgotPassword().getOtp());
 
-        forgotPasswordService.verifyOTP(otpDto.OTP(),"marcelo@alu.ufc.br");
+        forgotPasswordService.verifyOTP(otpDto.OTP(),"marcelao@alu.ufc.br");
 
         ResetPasswordDto resetPasswordDto = new ResetPasswordDto("M@rcelin12121", "M@rcelin12121");
         String response = testClient
                 .post()
-                .uri("/api/v1/forgot-password/changePassword/marcelo@alu.ufc.br")
+                .uri("/api/v1/forgot-password/changePassword/marcelao@alu.ufc.br")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(resetPasswordDto)
                 .exchange()
@@ -132,17 +132,17 @@ public class ForgotPasswordIT {
     @Test
     public void resetPassword_withInvalidPassword_returns422() {
 
-        forgotPasswordService.verifyEmail("marcelo@alu.ufc.br");
-        User user = userService.findByEmail("marcelo@alu.ufc.br");
+        forgotPasswordService.verifyEmail("reset@alu.ufc.br");
+        User user = userService.findByEmail("reset@alu.ufc.br");
 
         OtpDto otpDto = new OtpDto(user.getForgotPassword().getOtp());
 
-        forgotPasswordService.verifyOTP(otpDto.OTP(),"marcelo@alu.ufc.br");
+        forgotPasswordService.verifyOTP(otpDto.OTP(),"reset@alu.ufc.br");
 
         ResetPasswordDto resetPasswordDto = new ResetPasswordDto("M@qwqw", "M@rcelin12121");
         ErrorMessage response = testClient
                 .post()
-                .uri("/api/v1/forgot-password/changePassword/marcelo@alu.ufc.br")
+                .uri("/api/v1/forgot-password/changePassword/reset@alu.ufc.br")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(resetPasswordDto)
                 .exchange()
@@ -156,7 +156,7 @@ public class ForgotPasswordIT {
         resetPasswordDto = new ResetPasswordDto("", "M@rcelin12121");
         response = testClient
                 .post()
-                .uri("/api/v1/forgot-password/changePassword/marcelo@alu.ufc.br")
+                .uri("/api/v1/forgot-password/changePassword/reset@alu.ufc.br")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(resetPasswordDto)
                 .exchange()

@@ -24,7 +24,7 @@ public class ResumeIT {
     @Test
     public void creatResume_withValidData_returnStatus201() {
 
-        ResumeCreateDto resumeCreateDto = new ResumeCreateDto("resumo de calculo", "isso é um resumo de calculo", 5L);
+        ResumeCreateDto resumeCreateDto = new ResumeCreateDto("resumo de calculo", "isso é um resumo de calculo", 3L);
         testClient
                 .post()
                 .uri("/api/v1/resumes")
@@ -125,7 +125,7 @@ public class ResumeIT {
 
     @Test
     public void createSubject_AlreadyAssociated_returnStatus409() {
-        ResumeCreateDto resumeCreateDto = new ResumeCreateDto("resumo de calculo", "isso é um resumo de calculo", 4L);
+        ResumeCreateDto resumeCreateDto = new ResumeCreateDto("resumo de calculo", "isso é um resumo de calculo", 1L);
 
         ErrorMessage response = testClient
                 .post()

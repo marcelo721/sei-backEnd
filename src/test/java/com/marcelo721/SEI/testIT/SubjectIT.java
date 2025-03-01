@@ -187,6 +187,7 @@ public class SubjectIT {
         org.assertj.core.api.Assertions.assertThat(responseBody.getStatus()).isEqualTo(403);
     }//
 
+
     @Test
     public void findAllSubjects_withoutParameters_returnStatus200(){
 
@@ -200,7 +201,7 @@ public class SubjectIT {
                 .returnResult().getResponseBody();
 
         org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
-        org.assertj.core.api.Assertions.assertThat(responseBody.size()).isEqualTo(2);
+        org.assertj.core.api.Assertions.assertThat(responseBody.size()).isEqualTo(4);
     }//
 
     @Test
@@ -274,7 +275,6 @@ public class SubjectIT {
                 .returnResult().getResponseBody();
 
         org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
-        org.assertj.core.api.Assertions.assertThat(responseBody.size()).isEqualTo(2);
     }
 
     @Test

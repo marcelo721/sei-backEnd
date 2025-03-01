@@ -67,7 +67,7 @@ public class SubjectController {
             }
     )
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")//tested
+    @PreAuthorize("isAuthenticated()")//tested
     public ResponseEntity<SubjectResponseDto> getSubjectById(@PathVariable Long id) {
         Subject obj = subjectService.findById(id);
         return ResponseEntity.ok(SubjectResponseDto.toDto(obj));

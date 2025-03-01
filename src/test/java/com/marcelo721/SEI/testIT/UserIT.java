@@ -174,7 +174,7 @@ public class UserIT {
 
         testClient
                 .put()
-                .uri("/api/v1/users/1")
+                .uri("/api/v1/users/2")
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "marcelo@alu.ufc.br", "M@rcelo222"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(userPasswordDto)
@@ -292,7 +292,7 @@ public class UserIT {
     public void findById_withValidId_returnStatus200(){
         UserResponseDto responseBody = testClient
                 .get()
-                .uri("/api/v1/users/1")
+                .uri("/api/v1/users/2")
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "marcelin@alu.ufc.br", "M@rcelo222"))
                 .exchange()
                 .expectStatus().isOk()
@@ -300,7 +300,7 @@ public class UserIT {
                 .returnResult().getResponseBody();
 
         org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
-        org.assertj.core.api.Assertions.assertThat(responseBody.id()).isEqualTo(1);
+        org.assertj.core.api.Assertions.assertThat(responseBody.id()).isEqualTo(2);
         org.assertj.core.api.Assertions.assertThat(responseBody.email()).isEqualTo("marcelo@alu.ufc.br");
         org.assertj.core.api.Assertions.assertThat(responseBody.name()).isEqualTo("marcelinho22");
         org.assertj.core.api.Assertions.assertThat(responseBody.course()).isEqualTo("COMPUTER_ENGINEERING");
@@ -340,7 +340,7 @@ public class UserIT {
     public void findById_withoutPermission_returnStatus403(){
         ErrorMessage responseBody = testClient
                 .get()
-                .uri("/api/v1/users/2")
+                .uri("/api/v1/users/1")
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "marcelo@alu.ufc.br", "M@rcelo222"))
                 .exchange()
                 .expectStatus().isForbidden()
@@ -352,7 +352,8 @@ public class UserIT {
     }//
 
     @Test
-    public void findAllUsers_withoutParameters_returnStatus200(){
+    public void findAllUsers_withoutParameters_returnStatus200()
+    {
 
         List<UserResponseDto> responseBody = testClient
                 .get()
@@ -364,7 +365,7 @@ public class UserIT {
                 .returnResult().getResponseBody();
 
         org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
-        org.assertj.core.api.Assertions.assertThat(responseBody.size()).isEqualTo(1);
+        org.assertj.core.api.Assertions.assertThat(responseBody.size()).isEqualTo(6);
     }//
 
     @Test
@@ -402,7 +403,7 @@ public class UserIT {
     public void addSubject_withValidId_returnStatus200(){
          testClient
                 .post()
-                .uri("/api/v1/users/1/subjects/1")
+                .uri("/api/v1/users/2/subjects/1")
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "marcelo@alu.ufc.br", "M@rcelo222"))
                 .exchange()
                 .expectStatus().isNoContent()
@@ -415,7 +416,7 @@ public class UserIT {
     public void addSubject_withInvalidId_returnStatus404(){
         ErrorMessage responseBody =  testClient
                 .post()
-                .uri("/api/v1/users/1/subjects/0")
+                .uri("/api/v1/users/2/subjects/0")
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "marcelo@alu.ufc.br", "M@rcelo222"))
                 .exchange()
                 .expectStatus().isNotFound()
@@ -446,7 +447,7 @@ public class UserIT {
     public void addSubject_withoutPermission_returnStatus403(){
         ErrorMessage responseBody =  testClient
                 .post()
-                .uri("/api/v1/users/2/subjects/1")
+                .uri("/api/v1/users/1/subjects/1")
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "marcelo@alu.ufc.br", "M@rcelo222"))
                 .exchange()
                 .expectStatus().isEqualTo(403)
@@ -461,7 +462,7 @@ public class UserIT {
     public void removeSubject_withValidId_returnStatus200(){
         testClient
                 .delete()
-                .uri("/api/v1/users/1/subjects/2")
+                .uri("/api/v1/users/2/subjects/2")
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "marcelo@alu.ufc.br", "M@rcelo222"))
                 .exchange()
                 .expectStatus().isNoContent()
@@ -473,7 +474,7 @@ public class UserIT {
     public void removeSubject_withInvalidId_returnStatus404(){
         ErrorMessage responseBody =  testClient
                 .delete()
-                .uri("/api/v1/users/1/subjects/0")
+                .uri("/api/v1/users/2/subjects/0")
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "marcelo@alu.ufc.br", "M@rcelo222"))
                 .exchange()
                 .expectStatus().isNotFound()
@@ -502,9 +503,9 @@ public class UserIT {
     @Test
     public void removeSubject_withoutPermission_returnStatus403(){
         ErrorMessage responseBody =  testClient
-                .post()
-                .uri("/api/v1/users/2/subjects/1")
-                .headers(JwtAuthentication.getHeaderAuthorization(testClient, "marcelo@alu.ufc.br", "M@rcelo222"))
+                .delete()
+                .uri("/api/v1/users/4/subjects/1")
+                .headers(JwtAuthentication.getHeaderAuthorization(testClient, "marcelo@alu.ufc.br", "M@rcelinho212"))
                 .exchange()
                 .expectStatus().isEqualTo(403)
                 .expectBody(ErrorMessage.class)

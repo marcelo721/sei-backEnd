@@ -110,7 +110,7 @@ public class TopicController {
     )
 
     @GetMapping("/subjectId/{id}")
-    @PreAuthorize("hasRole('ADMIN')")//tested
+    @PreAuthorize("isAuthenticated()")//tested
     public ResponseEntity<List<TopicResponseDto>> findBySubjectId(@PathVariable Long id) {
         List<Topic> topics = topicService.getTopicsBySubject(id);
         return ResponseEntity.ok(TopicResponseDto.toListDto(topics));

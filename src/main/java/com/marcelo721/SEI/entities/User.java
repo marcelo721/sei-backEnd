@@ -50,7 +50,7 @@ public class User implements UserDetails {
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private Role role = Role.ADMIN;
+    private Role role = Role.STUDENT;
 
     @Column(name = "course")
     @Enumerated(EnumType.STRING)
