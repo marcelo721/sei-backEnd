@@ -93,4 +93,10 @@ public class VideoController {
         List<Video> all = videoService.findAll();
         return ResponseEntity.ok(VideoResponseDto.toDto(all));
     }
+
+    @GetMapping("/by-topic/{idTopic}")
+    public ResponseEntity<List<VideoResponseDto>> getByTopic(@PathVariable  Long idTopic){
+        List<VideoResponseDto> listVideos = VideoResponseDto.toDto(videoService.findByTopicId(idTopic));
+        return ResponseEntity.ok().body(listVideos);
+    }
 }

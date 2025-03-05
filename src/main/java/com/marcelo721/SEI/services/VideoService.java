@@ -6,6 +6,7 @@ import com.marcelo721.SEI.repositories.TopicRepository;
 import com.marcelo721.SEI.repositories.VideoRepository;
 import com.marcelo721.SEI.services.exceptions.EntityNotFoundException;
 import com.marcelo721.SEI.web.dto.VideoDto.VideoCreateDto;
+import com.marcelo721.SEI.web.dto.VideoDto.VideoResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,5 +42,10 @@ public class VideoService {
     @Transactional(readOnly = true)
     public Video findById(Long id) {
         return videoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Video not Found"));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Video> findByTopicId(Long idTopic) {
+        return videoRepository.findByTopicId(idTopic);
     }
 }
