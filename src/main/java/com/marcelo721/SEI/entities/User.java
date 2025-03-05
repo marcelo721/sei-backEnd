@@ -32,6 +32,10 @@ public class User implements UserDetails {
     @Column(name = "id", nullable = false, unique = true)
     private long id;
 
+    @Lob
+    @Column(name = "profile_picture")
+    private byte[] profilePicture;
+
     @Column(name = "name", nullable = false, length = 30)
     private String name;
 

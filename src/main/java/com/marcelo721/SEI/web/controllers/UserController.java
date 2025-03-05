@@ -20,13 +20,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -228,4 +231,27 @@ public class UserController {
         UserResponseDto user = UserResponseDto.toDto(userService.findByEmail(userDetails.getUsername()));
         return ResponseEntity.ok(user);
     }
+
+    @PostMapping("/{id}/upload-profile-picture")
+    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #id == authentication.principal.id)")//tested
+    public ResponseEntity<String> uploadProfilePicture(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+            userService.saveProfilePicture(id, file);
+            return ResponseEntity.ok("Imagem salva com sucesso!");
+    }
+
+
+    @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #id == authentication.principal.id)")//tested
+    @GetMapping("/{id}/profile-picture")
+    public ResponseEntity<byte[]> getUserImage(@PathVariable Long id) {
+        User user = userService.findById(id);
+
+        if (user.getProfilePicture() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(user.getProfilePicture());
+    }
 }
+

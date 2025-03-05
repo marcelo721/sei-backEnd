@@ -14,7 +14,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -110,6 +112,17 @@ public class UserService {
         User user = findById(userId);
         Subject subject = subjectService.findById(subjectId);
         user.getSubjects().remove(subject);
+        userRepository.save(user);
+    }
+
+    @Transactional()
+    public void saveProfilePicture(Long userId, MultipartFile file) {
+      User user = findById(userId);
+        try {
+            user.setProfilePicture(file.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         userRepository.save(user);
     }
 }
