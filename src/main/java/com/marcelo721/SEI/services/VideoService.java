@@ -21,6 +21,7 @@ public class VideoService {
 
     private final VideoRepository videoRepository;
     private final TopicService topicService;
+    private final TopicRepository topicRepository;
 
     @Transactional
     public Video save(VideoCreateDto video) {
@@ -47,5 +48,14 @@ public class VideoService {
     @Transactional(readOnly = true)
     public List<Video> findByTopicId(Long idTopic) {
         return videoRepository.findByTopicId(idTopic);
+    }
+
+    @Transactional()
+    public void delete(Long idVideo, Long idTopic) {
+
+        Topic topic = topicService.findById(idTopic);
+        Video obj = findById(idVideo);
+        topic.getVideos().removeIf(video -> video.getId().equals(idVideo));
+        topicService.updateTopic(topic);
     }
 }

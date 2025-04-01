@@ -1,6 +1,7 @@
 package com.marcelo721.SEI.web.controllers;
 
 import com.marcelo721.SEI.entities.Video;
+import com.marcelo721.SEI.services.UserService;
 import com.marcelo721.SEI.services.VideoService;
 import com.marcelo721.SEI.web.dto.VideoDto.VideoCreateDto;
 import com.marcelo721.SEI.web.dto.VideoDto.VideoResponseDto;
@@ -30,6 +31,7 @@ import java.util.List;
 public class VideoController {
 
     private final VideoService videoService;
+    private final UserService userService;
 
     @Operation(
             summary = "Create a new video resource",
@@ -98,5 +100,12 @@ public class VideoController {
     public ResponseEntity<List<VideoResponseDto>> getByTopic(@PathVariable  Long idTopic){
         List<VideoResponseDto> listVideos = VideoResponseDto.toDto(videoService.findByTopicId(idTopic));
         return ResponseEntity.ok().body(listVideos);
+    }
+
+    @DeleteMapping("/{id}/topic-id/{idTopic}")
+    public ResponseEntity<Void> deleteVideoById(@PathVariable Long id, @PathVariable Long idTopic){
+        log.info("deleting video with id {}", id);
+        videoService.delete(id, idTopic);
+        return ResponseEntity.noContent().build();
     }
 }

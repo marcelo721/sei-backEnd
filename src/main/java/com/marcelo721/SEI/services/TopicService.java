@@ -50,4 +50,8 @@ public class TopicService {
         if (subject == null) throw new EntityNotFoundException("Subject Not Found");
         return topicRepository.findTopicsBySubject(idSubject);
     }
+    @Transactional()
+    public void updateTopic(Topic topic) {
+        topicRepository.save(topic);
+    }
 }

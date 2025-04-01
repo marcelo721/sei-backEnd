@@ -242,13 +242,12 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN') OR (hasRole('STUDENT') AND #id == authentication.principal.id)")//tested
     @GetMapping("/{id}/profile-picture")
-    public ResponseEntity<byte[]> getUserImage(@PathVariable Long id) {
+    public ResponseEntity<?> getProfilePicture(@PathVariable Long id) {
         User user = userService.findById(id);
 
         if (user.getProfilePicture() == null) {
             return ResponseEntity.notFound().build();
         }
-
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(user.getProfilePicture());

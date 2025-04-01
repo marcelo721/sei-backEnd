@@ -44,7 +44,7 @@ public class TestConfig implements CommandLineRunner {
         user2.setEmail("professor@gmail.com");
         user2.setPassword("S&nha2025");
         user2.setCourse(Course.COMPUTER_ENGINEERING);
-        user2.setRole(Role.STUDENT);
+        user2.setRole(Role.ADMIN);
         userService.save(user2);
         user2 = userRepository.findByEmail("professor@gmail.com").get();
         user2.setStatusAccount(StatusAccount.ENABLED);
